@@ -3,6 +3,8 @@
 <?php
 require 'Config.php';
 
+$contactID = $_GET["contactID"];
+
 @ $db = new mysqli($server, $username, $password, $dbName);
 
 if (mysqli_connect_errno())
@@ -11,11 +13,10 @@ if (mysqli_connect_errno())
 	exit;
 }
 
-$query = "SELECT * FROM `contact` WHERE 1";
+$query = "SELECT `ContactID`, `FirstName`, `LastName`, `Company`, `Phone`, `Email`, `Url`, `Address`, `Birthday`, `Date`, `Related`, `SocialProfile`, `InstantMessage` FROM `contact` WHERE `ContactID` = '".$contactID."'";
 $result = $db->query($query);
 
 $num_results = $result->num_rows;
-echo $num_results." contact<br>";
 
 for ($i=0; $i <$num_results; $i++)
 {
@@ -35,5 +36,11 @@ for ($i=0; $i <$num_results; $i++)
 	echo "Instant Message:"		.$row['InstantMessage']."<br>";
 }
 ?>
+
+<form action="DeleteContact.php" method="post">
+<input type="hidden" name="contactID" value="<?php echo $contactID ?>" >
+<input type="submit" value="Delete">
+</form>
+
 </body>
 </html>
