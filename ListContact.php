@@ -1,4 +1,4 @@
-﻿<html>
+<html>
 <body>
 <?php
 require 'Config.php';
@@ -21,8 +21,8 @@ for ($i=0; $i <$num_results; $i++)
 {
 	$row = $result->fetch_assoc();
 	echo "<br>";
-	echo "FirstName:"			.$row['FirstName']."<br>";
-	echo "LastName:"			.$row['LastName']."<br>";
+	echo "First:"				.$row['FirstName']."<br>";
+	echo "Last:"				.$row['LastName']."<br>";
 	echo "Company:"				.$row['Company']."<br>";
 	echo "Phone:"				.$row['Phone']."<br>";
 	echo "Email:"				.$row['Email']."<br>";

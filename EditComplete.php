@@ -1,4 +1,4 @@
-﻿<html>
+<html>
 <body>
 <?php
 require 'Config.php';
@@ -16,13 +16,6 @@ $related 			= $_POST["related"];
 $socialProfile 		= $_POST["socialProfile"];
 $instantMessage 	= $_POST["instantMessage"];
 
-@ $db = new mysqli($server, $username, $password, $dbName);
-
-if (mysqli_connect_errno())
-{
-	echo "Error: Could not connect to database. Please try again later.<br>";
-	exit;
-}
 $query = "UPDATE `contact` SET `ContactID`='".$contactID."'".",`FirstName`='".$firstName."'".",`LastName`='".$lastName."'".",`Company`='".$company."'".",`Phone`='".$phone."'".",`Email`='".$email."'".",`Url`='".$url."'".",`Address`='".$address."'".",`Birthday`='".$birthday."'".",`Date`='".$date."'".",`Related`='".$related."'".",`SocialProfile`='".$socialProfile."'".",`InstantMessage`='".$instantMessage."'"." WHERE `ContactID` = '".$contactID."'";
 $result = $db->query($query);
 if($result)
