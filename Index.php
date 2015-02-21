@@ -29,13 +29,13 @@ for ($i=0; $i <$num_results; $i++)
 	}
 	$contactID = $row['ContactID'];
 	?><html>
-	<a href="Contact.php?contactID=<?php echo $contactID;?>"> <?php echo $name ?></a>
+	<a href="Contact.php?contactID=<?php echo $contactID; ?>"> <?php echo $name ?></a>
 	</html> <?php
 }
 echo "<br>";
 ?>
 
-<form action="ListView.php" method="post">
+<form action="ListContact.php" method="post">
 <input type="submit" value="View All">
 </form>
 

@@ -15,7 +15,10 @@ if (mysqli_connect_errno())
 $query = "DELETE FROM `contact` WHERE `ContactID` = '".$contactID."'";
 $result = $db->query($query);
 
-echo "Deleted Successfully";
+if($result)
+	echo "Deleted Sucessfully";
+else 
+	echo "Something Error";
 ?>
 </body>
 </html>
