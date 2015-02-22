@@ -1,15 +1,26 @@
 <html>
 <body>
 <?php
-require 'Config.php';
-
-@ $db = new mysqli($server, $username, $password, $dbName);
-
-if (mysqli_connect_errno())
-{
-	echo "Error: Could not connect to database. Please try again later.<br>";
-	exit;
+function writeString($string,$value) {
+    if($value)
+	{
+		echo $string.":".$value."<br>";
+	}
 }
+$firstName;
+$lastName;
+$company;
+$phone;
+$email;
+$url;
+$address;
+$birthday;
+$date;
+$related;
+$socialProfile;
+$instantMessage;
+
+require 'Config.php';
 
 $query = "SELECT * FROM `contact` WHERE 1";
 $result = $db->query($query);
@@ -19,20 +30,37 @@ echo $num_results." contact<br>";
 
 for ($i=0; $i <$num_results; $i++)
 {
-	$row = $result->fetch_assoc();
 	echo "<br>";
-	echo "First:"				.$row['FirstName']."<br>";
-	echo "Last:"				.$row['LastName']."<br>";
-	echo "Company:"				.$row['Company']."<br>";
-	echo "Phone:"				.$row['Phone']."<br>";
-	echo "Email:"				.$row['Email']."<br>";
-	echo "Url:"					.$row['Url']."<br>";
-	echo "Address:"				.$row['Address']."<br>";
-	echo "Birthday:"			.$row['Birthday']."<br>";
-	echo "Date:"				.$row['Date']."<br>";
-	echo "Related:"				.$row['Related']."<br>";
-	echo "Social Profile:"		.$row['SocialProfile']."<br>";
-	echo "Instant Message:"		.$row['InstantMessage']."<br>";
+	$row = $result->fetch_assoc();
+	$firstName			= $row['FirstName'];
+	$lastName 			= $row['LastName'];
+	$company 			= $row['Company'];
+	$phone 				= $row['Phone'];
+	$email 				= $row['Email'];
+	$url 				= $row['Url'];
+	$address 			= $row['Address'];
+	$birthday 			= $row['Birthday'];
+	$date 				= $row['Date'];
+	$related 			= $row['Related'];
+	$socialProfile 		= $row['SocialProfile'];
+	$instantMessage 	= $row['InstantMessage'];
+	if(empty($firstName) && empty($lastName))
+	{
+		$firstName = "#noname";
+		$lastName = "#noname";
+	}
+	writeString("First",$firstName);
+	writeString("Last",$lastName);
+	writeString("Company",$company);
+	writeString("Phone",$phone);
+	writeString("Email",$email);
+	writeString("Url",$url);
+	writeString("Address",$address);
+	writeString("Birthday",$birthday);
+	writeString("Date",$date);
+	writeString("Related",$related);
+	writeString("Social Profile",$socialProfile);
+	writeString("Instant Message",$instantMessage);
 }
 ?>
 </body>
