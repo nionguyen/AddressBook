@@ -6,7 +6,7 @@
 </form>
 <?php
 //http://stackoverflow.com/questions/11211710/how-do-i-send-data-from-one-php-file-to-another
-require 'Config.php';
+require_once 'Config.php';
 $query = "SELECT * FROM `contact` WHERE 1";
 $result = $db->query($query);
 

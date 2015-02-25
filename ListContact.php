@@ -20,7 +20,7 @@ $related;
 $socialProfile;
 $instantMessage;
 
-require 'Config.php';
+require_once 'Config.php';
 
 $query = "SELECT * FROM `contact` WHERE 1";
 $result = $db->query($query);

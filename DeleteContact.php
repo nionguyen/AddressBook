@@ -1,7 +1,7 @@
 <html>
 <body>
 <?php
-require 'Config.php';
+require_once 'Config.php';
 $contactID = $_POST["contactID"];
 $query = "DELETE FROM `contact` WHERE `ContactID` = '".$contactID."'";
 $result = $db->query($query);

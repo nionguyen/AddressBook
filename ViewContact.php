@@ -9,7 +9,7 @@ function writeString($string,$value) {
 	}
 }
 
-require 'Config.php';
+require_once 'Config.php';
 
 $contactID = $_GET["contactID"];
 $query = "SELECT `ContactID`, `FirstName`, `LastName`, `Company`, `Phone`, `Email`, `Url`, `Address`, `Birthday`, `Date`, `Related`, `SocialProfile`, `InstantMessage` FROM `contact` WHERE `ContactID` = '".$contactID."'";
