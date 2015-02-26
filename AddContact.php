@@ -10,7 +10,7 @@ $phoneErr = "";
 $havingErr = FALSE;
 if ($_SERVER["REQUEST_METHOD"] == "POST")
 {
-	require 'Config.php';
+	require_once 'Config.php';
 
 	$firstName			= $_POST["firstName"];
 	$lastName 			= $_POST["lastName"];
@@ -32,20 +32,25 @@ if ($_SERVER["REQUEST_METHOD"] == "POST")
 	
 	if(!$havingErr)
 	{
-		$query = "insert into contact values (NULL,'".$firstName."', '".$lastName."', '".$company."', '".$phone."', '".$email."', '".$url."', '".$address."', '".$birthday."', '".$date."', '".$related."', '".$socialProfile."', '".$instantMessage."')";
-		$result = $db->query($query);
-
-		if($result)
+		try
 		{
-			echo $db->affected_rows." contact added successfully<br>";
+			$query = "insert into contact values (NULL,'".$firstName."', '".$lastName."', '".$company."', '".$phone."', '".$email."', '".$url."', '".$address."', '".$birthday."', '".$date."', '".$related."', '".$socialProfile."', '".$instantMessage."')";
+			$result = $db->query($query);
+			if($result)
+			{
+				echo $db->affected_rows()." contact added successfully<br>";
+			}
+			else
+			{
+				throw new UnexpectedValueException('Query result has a error');
+			}
 		}
-		else
+		catch (Exception $e)
 		{
-			echo "Error<br>";
+			echo "Error: ".$e->getMessage()." in ".$e->getFile()." on line ".$e->getLine()."<br />" ;
+			exit;
 		}
-		$db->close();
 	}
-	else echo "Somthing Error";
 }
 
 

@@ -12,9 +12,21 @@ function writeString($string,$value) {
 require_once 'Config.php';
 
 $contactID = $_GET["contactID"];
-$query = "SELECT `ContactID`, `FirstName`, `LastName`, `Company`, `Phone`, `Email`, `Url`, `Address`, `Birthday`, `Date`, `Related`, `SocialProfile`, `InstantMessage` FROM `contact` WHERE `ContactID` = '".$contactID."'";
-$result = $db->query($query);
-$row = $result->fetch_assoc();
+
+try
+{
+	$query = "SELECT `ContactID`, `FirstName`, `LastName`, `Company`, `Phone`, `Email`, `Url`, `Address`, `Birthday`, `Date`, `Related`, `SocialProfile`, `InstantMessage` FROM `contact` WHERE `ContactID` = '".$contactID."'";
+	$result = $db->query($query);
+	if(!$result){
+		throw new UnexpectedValueException('Query result has a error');
+	}
+	$row = $result->fetch_assoc();
+}
+catch (Exception $e)
+{
+	echo "Error: ".$e->getMessage()." in ".$e->getFile()." on line ".$e->getLine()."<br />" ;
+	exit;
+}
 
 $firstName			= $row['FirstName'];
 $lastName 			= $row['LastName'];

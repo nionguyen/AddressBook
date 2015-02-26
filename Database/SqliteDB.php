@@ -6,6 +6,10 @@ class SqliteDB implements IDatabase
 	private $db;
 	public function connect($location='')
 	{
+		if(strcmp($location,"") == 0)
+		{
+			throw new InvalidArgumentException('Location is empty');
+		}
 		$this->db = new SQLite3($location); 
 	}
 	public function error()

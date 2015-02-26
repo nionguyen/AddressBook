@@ -3,9 +3,21 @@
 <?php
 require_once 'Config.php';
 $contactID = $_POST["contactID"];
-$query = "SELECT `ContactID`, `FirstName`, `LastName`, `Company`, `Phone`, `Email`, `Url`, `Address`, `Birthday`, `Date`, `Related`, `SocialProfile`, `InstantMessage` FROM `contact` WHERE `ContactID` = '".$contactID."'";
-$result = $db->query($query);
-$row = $result->fetch_assoc();
+
+try
+{
+	$query = "SELECT `ContactID`, `FirstName`, `LastName`, `Company`, `Phone`, `Email`, `Url`, `Address`, `Birthday`, `Date`, `Related`, `SocialProfile`, `InstantMessage` FROM `contact` WHERE `ContactID` = '".$contactID."'";
+	$result = $db->query($query);
+	if(!$result){
+		throw new UnexpectedValueException('Query result has a error');
+	}
+	$row = $result->fetch_assoc();
+}
+catch (Exception $e)
+{
+	echo "Error: ".$e->getMessage()." in ".$e->getFile()." on line ".$e->getLine()."<br />" ;
+	exit;
+}
 ?>
 <form action="EditComplete.php" method="post">
 First: 				<input type="text" value="<?php echo $row['FirstName']; ?>" 	 name="firstName"><br><br>

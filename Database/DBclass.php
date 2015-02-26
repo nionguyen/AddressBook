@@ -53,7 +53,7 @@ class SqliteDBConn extends ConnData
 
 class DBclass implements IDatabase
 {
-	public $db;
+	private $db;
 	private $type;
 	function __construct($typeDB, $connData)
 	{
@@ -82,6 +82,11 @@ class DBclass implements IDatabase
 			case TypeDB::SqliteDB:
 			{
 				$this->db = new SqliteDB();
+				break;
+			}
+			default:
+			{
+				throw new InvalidArgumentException('TypeDB is not appropriate');
 				break;
 			}
 		}

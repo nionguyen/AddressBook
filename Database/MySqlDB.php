@@ -6,6 +6,18 @@ class MySqlDB implements IDatabase
 	private $db;
 	public function connect($server='', $username='', $password='', $dbName='')
 	{
+		if(strcmp($server,"") == 0)
+		{
+			throw new InvalidArgumentException('Server is empty');
+		}
+		if(strcmp($dbName,"") == 0)
+		{
+			throw new InvalidArgumentException('DbName is empty');
+		}
+		if(strcmp($username,"") == 0)
+		{
+			throw new InvalidArgumentException('Username is empty');
+		}
 		$this->db = new mysqli($server, $username, $password, $dbName);
 	}
 	
