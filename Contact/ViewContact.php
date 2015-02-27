@@ -9,7 +9,7 @@ function writeString($string,$value) {
 	}
 }
 
-require_once 'Config.php';
+require_once '../Config.php';
 
 $contactID = $_GET["contactID"];
 

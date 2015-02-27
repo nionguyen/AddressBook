@@ -110,6 +110,11 @@ class DBclass implements IDatabase
 				$this->db->connect($connData->location);
 				break;
 			}
+			default:
+			{
+				throw new InvalidArgumentException('TypeDB is not appropriate');
+				break;
+			}
 		}
 	}
 	public function error()

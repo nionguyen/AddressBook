@@ -1,7 +1,7 @@
 <html>
 <body>
 <?php
-require_once 'Config.php';
+require_once '../Config.php';
 $contactID 			= $_POST["contactID"];
 $firstName			= $_POST["firstName"];
 $lastName 			= $_POST["lastName"];

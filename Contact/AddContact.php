@@ -10,7 +10,7 @@ $phoneErr = "";
 $havingErr = FALSE;
 if ($_SERVER["REQUEST_METHOD"] == "POST")
 {
-	require_once 'Config.php';
+	require_once '../Config.php';
 
 	$firstName			= $_POST["firstName"];
 	$lastName 			= $_POST["lastName"];
