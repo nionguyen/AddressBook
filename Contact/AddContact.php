@@ -6,6 +6,8 @@
 </head>
 <body>
 <?php
+require_once '../User/issetLogin.php';
+
 $phoneErr = "";
 $havingErr = FALSE;
 if ($_SERVER["REQUEST_METHOD"] == "POST")
@@ -39,6 +41,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST")
 			if($result)
 			{
 				echo $db->affected_rows()." contact added successfully<br>";
+				$newID = $db->insert_id();
+				$query = "insert into contact_user values ('".$newID."', '".$userid."')";
+				$result = $db->query($query);
 			}
 			else
 			{

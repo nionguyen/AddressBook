@@ -47,7 +47,13 @@ class PostgresDB implements IDatabase
     public function close()
 	{
 		pg_close($this->db);
-	}		
+	}
+	public function insert_id()
+	{
+	}
+	public function multi_query($query)
+	{
+	}
 }
 
 ?>

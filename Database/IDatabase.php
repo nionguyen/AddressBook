@@ -10,6 +10,8 @@ interface IDatabase
     public function fetch_object($result); 
     public function num_rows($result);
 	public function affected_rows();
-    public function close(); 
+    public function close();
+	public function insert_id();
+	public function multi_query($query);
 }
 ?>

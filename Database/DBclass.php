@@ -152,7 +152,15 @@ class DBclass implements IDatabase
     public function close()
 	{
 		$this->db->close();
-	}		
+	}
+	public function insert_id()
+	{
+		return $this->db->insert_id();
+	}
+	public function multi_query($query)
+	{
+		$this->db->multi_query($query);
+	}
 }
 
 ?>

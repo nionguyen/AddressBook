@@ -48,7 +48,7 @@ class MySqlDB implements IDatabase
 	}		
     public function num_rows($result)
 	{
-		$result->num_rows;
+		return $result->num_rows;
 	}
 	public function affected_rows()
 	{
@@ -57,7 +57,16 @@ class MySqlDB implements IDatabase
     public function close()
 	{
 		$this->db->close();
-	}		
+	}
+	public function insert_id()
+	{
+		return mysqli_insert_id($this->db);
+	}
+	
+	public function multi_query($query)
+	{
+		$this->db->multi_query($query);
+	}
 }
 
 ?>

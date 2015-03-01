@@ -1,35 +1,43 @@
 <html>
 <body>
 <form>
-<input type=button onClick="location.href='ListContact.php'" value="List Contact">
-<input type=button onClick="location.href='AddContact.php'" value="Add Contact">
 </form>
 <?php
+require_once '../User/issetLogin.php';
+echo '<input type=button onClick="location.href=\'ListContact.php\'" value="List Contact">';
+echo '<input type=button onClick="location.href=\'AddContact.php\'" value="Add Contact">';
+
 //http://stackoverflow.com/questions/11211710/how-do-i-send-data-from-one-php-file-to-another
 require_once '../Config.php';
 try
 {
-	$query = "SELECT * FROM `contact` WHERE 1";
-	$result = $db->query($query);
-	if(!$result){
-		throw new UnexpectedValueException('Query result has a error');
+	$query = "SELECT * FROM `contact_user` WHERE `UserID` = '".$userid."'";
+	$contactUsers = $db->query($query);
+	if(!$contactUsers){
+		throw new UnexpectedValueException('Query contactUsers has a error');
 	}
 	
-	$num_results = $result->num_rows;
-	echo "All Contacts <br>";
-	for ($i=0; $i <$num_results; $i++)
+	$num_ContactUsers = $db->num_rows($contactUsers);
+	echo "<br> All Contacts <br>";
+	for ($i = 0; $i < $num_ContactUsers; $i++)
 	{
-		$row = $result->fetch_assoc();
-		echo "<br>";
-		$name = $row['FirstName']." ".$row['LastName'];
-		if(empty($row['FirstName']) && empty($row['LastName']))
+		$contactUser = $db->fetch_assoc($contactUsers);
+		$contactID = $contactUser['ContactID'];
+		
+		$query = "SELECT * FROM `contact` WHERE `ContactID` = '".$contactID."'";
+		$contacts = $db->query($query);
+		$contact = $db->fetch_assoc($contacts);
+		
+		$name = $contact['FirstName']." ".$contact['LastName'];
+		if(empty($contact['FirstName']) && empty($contact['LastName']))
 		{
 			$name = "#noname";
 		}
-		$contactID = $row['ContactID'];
+		$contactID = $contact['ContactID'];
 		?><html>
 		<a href="ViewContact.php?contactID=<?php echo $contactID; ?>"> <?php echo $name ?></a>
 		</html> <?php
+		echo "<br>";
 	}
 }
 catch (Exception $e)

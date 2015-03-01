@@ -1,6 +1,8 @@
 <html>
 <body>
 <?php
+require_once '../User/issetLogin.php';
+
 function writeString($string,$value) {
     if($value)
 	{
@@ -23,31 +25,34 @@ $instantMessage;
 require_once '../Config.php';
 try
 {
-	$query = "SELECT * FROM `contact` WHERE 1";
-	$result = $db->query($query);
-	if(!$result){
-		throw new UnexpectedValueException('Query result has a error');
+	$query = "SELECT * FROM `contact_user` WHERE `UserID` = '".$userid."'";
+	$contactUsers = $db->query($query);
+	if(!$contactUsers){
+		throw new UnexpectedValueException('Query contactUsers has a error');
 	}
 	
-	$num_results = $result->num_rows;
-	echo $num_results." contact<br>";
-
-	for ($i=0; $i <$num_results; $i++)
+	$num_ContactUsers = $db->num_rows($contactUsers);
+	
+	for ($i = 0; $i < $num_ContactUsers; $i++)
 	{
-		echo "<br>";
-		$row = $result->fetch_assoc();
-		$firstName			= $row['FirstName'];
-		$lastName 			= $row['LastName'];
-		$company 			= $row['Company'];
-		$phone 				= $row['Phone'];
-		$email 				= $row['Email'];
-		$url 				= $row['Url'];
-		$address 			= $row['Address'];
-		$birthday 			= $row['Birthday'];
-		$date 				= $row['Date'];
-		$related 			= $row['Related'];
-		$socialProfile 		= $row['SocialProfile'];
-		$instantMessage 	= $row['InstantMessage'];
+		$contactUser = $db->fetch_assoc($contactUsers);
+		$contactID = $contactUser['ContactID'];
+		$query = "SELECT * FROM `contact` WHERE `ContactID` = '".$contactID."'";
+		$contacts = $db->query($query);
+		$contact = $db->fetch_assoc($contacts);
+		
+		$firstName			= $contact['FirstName'];
+		$lastName 			= $contact['LastName'];
+		$company 			= $contact['Company'];
+		$phone 				= $contact['Phone'];
+		$email 				= $contact['Email'];
+		$url 				= $contact['Url'];
+		$address 			= $contact['Address'];
+		$birthday 			= $contact['Birthday'];
+		$date 				= $contact['Date'];
+		$related 			= $contact['Related'];
+		$socialProfile 		= $contact['SocialProfile'];
+		$instantMessage 	= $contact['InstantMessage'];
 		if(empty($firstName) && empty($lastName))
 		{
 			$firstName = "#noname";
@@ -65,6 +70,7 @@ try
 		writeString("Related",$related);
 		writeString("Social Profile",$socialProfile);
 		writeString("Instant Message",$instantMessage);
+		echo "<br>";
 	}
 }
 catch (Exception $e)

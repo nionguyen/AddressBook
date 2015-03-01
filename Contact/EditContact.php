@@ -11,7 +11,7 @@ try
 	if(!$result){
 		throw new UnexpectedValueException('Query result has a error');
 	}
-	$row = $result->fetch_assoc();
+	$row = $db->fetch_assoc($result);
 }
 catch (Exception $e)
 {
