@@ -1,9 +1,6 @@
 <?php
-//require_once 'IDatabase.php';
 //http://php.net/manual/en/ref.mysql.php
-spl_autoload_register(function ($class) {
-    require_once $class.'.php';
-});
+
 class MySqlDB implements IDatabase
 {
 	private $db;

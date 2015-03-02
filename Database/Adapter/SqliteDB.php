@@ -1,9 +1,6 @@
 <?php
-//require_once 'IDatabase.php';
 //http://php.net/manual/en/book.sqlite3.php
-spl_autoload_register(function ($class) {
-    require_once $class.'.php';
-});
+
 class SqliteDB implements IDatabase
 {
 	private $db;
@@ -53,7 +50,6 @@ class SqliteDB implements IDatabase
 	public function multi_query($query)
 	{
 	}
-	
 	public function real_escape_string($escapestr)
 	{
 	}

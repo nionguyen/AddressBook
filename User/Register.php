@@ -19,8 +19,6 @@ if($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST["myusername"]) && isset(
 {
 	$myusername				= $_POST["myusername"];
 	$mypassword 			= $_POST["mypassword"];
-	//$myusername = stripslashes($myusername);
-	//$mypassword = stripslashes($mypassword);
 	if(!empty($myusername) && !empty($mypassword))
 	{
 

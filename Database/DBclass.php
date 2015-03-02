@@ -1,14 +1,6 @@
 <?php
-/*
-function __autoload($class_name) {
-    require_once $class_name . '.php';
-	//throw new Exception("Unable to load ".$class_name);
-}
-*/
-
-spl_autoload_register(function ($class) {
-    require_once 'Adapter/'.$class.'.php';
-});
+//http://stackoverflow.com/questions/5280347/autoload-classes-from-different-folders
+//http://stackoverflow.com/questions/7713072/how-can-i-load-classes-from-multiple-directories-with-autoload
 
 class DBclass implements IDatabase
 {
