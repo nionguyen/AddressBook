@@ -1,6 +1,7 @@
 <?php
 //http://php.net/manual/en/book.sqlite3.php
-
+namespace Database\Adapter;
+require_once $_SERVER['DOCUMENT_ROOT']."/AddressBook/".'AutoLoad.php';
 class SqliteDB implements IDatabase
 {
 	private $db;

@@ -1,4 +1,5 @@
 <?php
+namespace Database\Adapter;
 interface IDatabase 
 {
     public function connect(); 

@@ -1,5 +1,7 @@
 <?php
 //http://php.net/manual/en/book.pgsql.php
+namespace Database\Adapter;
+require_once $_SERVER['DOCUMENT_ROOT']."/AddressBook/".'AutoLoad.php';
 class PostgresDB implements IDatabase
 {
 	private $db;

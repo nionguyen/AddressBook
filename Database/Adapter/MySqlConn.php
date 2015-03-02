@@ -1,5 +1,6 @@
 <?php
-
+namespace Database\Adapter;
+require_once $_SERVER['DOCUMENT_ROOT']."/AddressBook/".'AutoLoad.php';
 class MySqlConn extends AbstractConnData
 {
 	public $server;

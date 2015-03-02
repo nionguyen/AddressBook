@@ -1,8 +1,10 @@
 <?php
 //http://stackoverflow.com/questions/5280347/autoload-classes-from-different-folders
 //http://stackoverflow.com/questions/7713072/how-can-i-load-classes-from-multiple-directories-with-autoload
+namespace Database;
+require_once $_SERVER['DOCUMENT_ROOT']."/AddressBook/".'AutoLoad.php';
 
-class DBclass implements IDatabase
+class DBclass implements Adapter\IDatabase
 {
 	private $db;
 	private $type;
@@ -20,19 +22,19 @@ class DBclass implements IDatabase
 		$this->type = $typeDB;
 		switch($this->type)
 		{
-			case TypeDB::MYSQL:
+			case Adapter\TypeDB::MYSQL:
 			{
-				$this->db = new MySqlDB();
+				$this->db = new Adapter\MySqlDB();
 				break;
 			}
-			case TypeDB::POSTGRES:
+			case Adapter\TypeDB::POSTGRES:
 			{
-				$this->db = new PostgresDB();
+				$this->db = new Adapter\PostgresDB();
 				break;
 			}
-			case TypeDB::SQLITE:
+			case Adapter\TypeDB::SQLITE:
 			{
-				$this->db = new SqliteDB();
+				$this->db = new Adapter\SqliteDB();
 				break;
 			}
 			default:
@@ -46,17 +48,17 @@ class DBclass implements IDatabase
 	{
 		switch($this->type)
 		{
-			case TypeDB::MYSQL:
+			case Adapter\TypeDB::MYSQL:
 			{
 				$this->db->connect($connData->server, $connData->username, $connData->password, $connData->dbName);
 				break;
 			}
-			case TypeDB::POSTGRES:
+			case Adapter\TypeDB::POSTGRES:
 			{
 				$this->db->connect($connData->server, $connData->username, $connData->password, $connData->dbName);
 				break;
 			}
-			case TypeDB::SQLITE:
+			case Adapter\TypeDB::SQLITE:
 			{
 				$this->db->connect($connData->location);
 				break;

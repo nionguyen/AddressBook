@@ -1,5 +1,5 @@
 <?php
-
+namespace Database\Adapter;
 abstract class TypeDB
 {
     const MYSQL 	= 0;

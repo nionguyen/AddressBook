@@ -1,6 +1,7 @@
 <?php
+namespace Database\Adapter;
+require_once $_SERVER['DOCUMENT_ROOT']."/AddressBook/".'AutoLoad.php';
 //http://php.net/manual/en/ref.mysql.php
-
 class MySqlDB implements IDatabase
 {
 	private $db;
@@ -18,7 +19,7 @@ class MySqlDB implements IDatabase
 		{
 			throw new InvalidArgumentException('Username is empty');
 		}
-		$this->db = new mysqli($server, $username, $password, $dbName);
+		$this->db = new \mysqli($server, $username, $password, $dbName);
 	}
 	
 	public function error()
