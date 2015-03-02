@@ -11,8 +11,8 @@ function writeString($string,$value) {
 
 require_once '../Config.php';
 
-$contactID = $_GET["contactID"];
-
+$contactID = isset($_GET['contactID']) ? (int)$_GET['contactID'] : false;
+$contactID = str_replace('/[^0-9]/', '', $contactID);
 try
 {
 	$query = "SELECT `ContactID`, `FirstName`, `LastName`, `Company`, `Phone`, `Email`, `Url`, `Address`, `Birthday`, `Date`, `Related`, `SocialProfile`, `InstantMessage` FROM `contact` WHERE `ContactID` = '".$contactID."'";

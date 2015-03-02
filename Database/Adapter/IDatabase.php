@@ -13,5 +13,6 @@ interface IDatabase
     public function close();
 	public function insert_id();
 	public function multi_query($query);
+	public function real_escape_string($escapestr);
 }
 ?>

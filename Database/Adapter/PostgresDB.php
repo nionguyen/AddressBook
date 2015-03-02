@@ -1,7 +1,9 @@
 <?php
 //http://php.net/manual/en/book.pgsql.php
-require_once 'IDatabase.php';
-
+//require_once 'IDatabase.php';
+spl_autoload_register(function ($class) {
+    require_once $class.'.php';
+});
 class PostgresDB implements IDatabase
 {
 	private $db;
@@ -52,6 +54,9 @@ class PostgresDB implements IDatabase
 	{
 	}
 	public function multi_query($query)
+	{
+	}
+	public function real_escape_string($escapestr)
 	{
 	}
 }

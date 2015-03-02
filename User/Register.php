@@ -27,6 +27,8 @@ if($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST["myusername"]) && isset(
 		try
 		{
 			require_once '../Config.php';
+			$myusername = $db->real_escape_string($myusername);
+			$mypassword = $db->real_escape_string($mypassword);
 			$query = "insert into user values (NULL,'".$myusername."', sha1('".$mypassword."'))";
 			$result = $db->query($query);
 			if($result)

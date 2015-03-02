@@ -25,6 +25,8 @@ if($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST["myusername"]) && isset(
 		try
 		{
 			require_once '../Config.php';
+			$myusername = $db->real_escape_string($myusername);
+			$mypassword = $db->real_escape_string($mypassword);
 			$query = "SELECT `UserID`, `UserName`, `Password` FROM `user` WHERE `UserName` = '".$myusername."'"." and `Password` = sha1('".$mypassword."')";
 			$result = $db->query($query);
 			if(!$result)

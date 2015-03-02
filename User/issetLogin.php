@@ -12,7 +12,7 @@ if(!isset($_SESSION["userid"]))
 	';
 	exit;
 }
-$userid = $_SESSION["userid"];
+$userid = (int)$_SESSION["userid"];
 ?>
 <head>
 

@@ -1,55 +1,14 @@
 <?php
-require_once 'PostgresDB.php';
-require_once 'MySqlDB.php';
-require_once 'SqliteDB.php';
-
-abstract class TypeDB
-{
-    const MySql 	= 0;
-    const Postgres 	= 1;
-    const SqliteDB 	= 2;
+/*
+function __autoload($class_name) {
+    require_once $class_name . '.php';
+	//throw new Exception("Unable to load ".$class_name);
 }
-$TypeDB = array ("MySql" => 0,"Postgres" => 1,"SqliteDB" => 2); 
+*/
 
-abstract class ConnData { }
-class MySqlConn extends ConnData
-{
-	public $server;
-	public $username;
-	public $password;
-	public $dbName;
-	function __construct($server, $username, $password, $dbName)
-	{
-		$this->server 	= $server;
-		$this->username = $username;
-		$this->password = $password;
-		$this->dbName 	= $dbName;
-	}
-}
-
-class PostgresConn extends ConnData
-{
-	public $server;
-	public $username;
-	public $password;
-	public $dbName;
-	function __construct($server, $username, $password, $dbName)
-	{
-		$this->server 	= $server;
-		$this->username = $username;
-		$this->password = $password;
-		$this->dbName 	= $dbName;
-	}
-}
-
-class SqliteDBConn extends ConnData
-{
-	public $location;
-	function __construct($location)
-	{
-		$this->location = $location;
-	}
-}
+spl_autoload_register(function ($class) {
+    require_once 'Adapter/'.$class.'.php';
+});
 
 class DBclass implements IDatabase
 {
@@ -69,17 +28,17 @@ class DBclass implements IDatabase
 		$this->type = $typeDB;
 		switch($this->type)
 		{
-			case TypeDB::MySql:
+			case TypeDB::MYSQL:
 			{
 				$this->db = new MySqlDB();
 				break;
 			}
-			case TypeDB::Postgres:
+			case TypeDB::POSTGRES:
 			{
 				$this->db = new PostgresDB();
 				break;
 			}
-			case TypeDB::SqliteDB:
+			case TypeDB::SQLITE:
 			{
 				$this->db = new SqliteDB();
 				break;
@@ -95,17 +54,17 @@ class DBclass implements IDatabase
 	{
 		switch($this->type)
 		{
-			case TypeDB::MySql:
+			case TypeDB::MYSQL:
 			{
 				$this->db->connect($connData->server, $connData->username, $connData->password, $connData->dbName);
 				break;
 			}
-			case TypeDB::Postgres:
+			case TypeDB::POSTGRES:
 			{
 				$this->db->connect($connData->server, $connData->username, $connData->password, $connData->dbName);
 				break;
 			}
-			case TypeDB::SqliteDB:
+			case TypeDB::SQLITE:
 			{
 				$this->db->connect($connData->location);
 				break;
@@ -160,6 +119,10 @@ class DBclass implements IDatabase
 	public function multi_query($query)
 	{
 		$this->db->multi_query($query);
+	}
+	public function real_escape_string($escapestr)
+	{
+		return $this->db->real_escape_string($escapestr);
 	}
 }
 

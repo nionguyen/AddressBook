@@ -1,6 +1,9 @@
 <?php
-require_once 'IDatabase.php';
+//require_once 'IDatabase.php';
 //http://php.net/manual/en/ref.mysql.php
+spl_autoload_register(function ($class) {
+    require_once $class.'.php';
+});
 class MySqlDB implements IDatabase
 {
 	private $db;
@@ -66,6 +69,10 @@ class MySqlDB implements IDatabase
 	public function multi_query($query)
 	{
 		$this->db->multi_query($query);
+	}
+	public function real_escape_string($escapestr)
+	{
+		return $this->db->real_escape_string($escapestr);
 	}
 }
 

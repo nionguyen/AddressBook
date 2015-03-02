@@ -6,8 +6,8 @@
 require_once '../User/issetLogin.php';
 require_once '../Config.php';
 
-$contactID = $_POST["contactID"];
-
+$contactID = isset($_POST['contactID']) ? (int)$_POST['contactID'] : false;
+$contactID = str_replace('/[^0-9]/', '', $contactID);
 try
 {
 	//$query = "DELETE FROM `contact_user` WHERE `ContactID` = '".$contactID."'"."and `UserID` = '".$userid."';";

@@ -1,13 +1,14 @@
 <?php
 //http://php.net/manual/en/function.parse-ini-file.php
 require_once 'Database/DBclass.php';
+
 $ini_array = parse_ini_file("Database/database.ini");
 
 $server    = $ini_array["server"];
 $username  = $ini_array["username"];
 $password  = $ini_array["password"];
 $dbName = $ini_array["dbName"];
-$dbType = $TypeDB[$ini_array["dbType"]];
+$dbType = $ini_array["dbType"];
 
 try
 {

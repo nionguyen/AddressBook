@@ -36,6 +36,18 @@ if ($_SERVER["REQUEST_METHOD"] == "POST")
 	{
 		try
 		{
+			$firstName = $db->real_escape_string($firstName);
+			$lastName = $db->real_escape_string($lastName);
+			$company = $db->real_escape_string($company);
+			$email = $db->real_escape_string($email);
+			$url = $db->real_escape_string($url);
+			$address = $db->real_escape_string($address);
+			$birthday = $db->real_escape_string($birthday);
+			$date = $db->real_escape_string($date);
+			$related = $db->real_escape_string($related);
+			$socialProfile = $db->real_escape_string($socialProfile);
+			$instantMessage = $db->real_escape_string($instantMessage);
+			
 			$query = "insert into contact values (NULL,'".$firstName."', '".$lastName."', '".$company."', '".$phone."', '".$email."', '".$url."', '".$address."', '".$birthday."', '".$date."', '".$related."', '".$socialProfile."', '".$instantMessage."')";
 			$result = $db->query($query);
 			if($result)
