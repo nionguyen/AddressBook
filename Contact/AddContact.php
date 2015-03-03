@@ -48,14 +48,25 @@ if ($_SERVER["REQUEST_METHOD"] == "POST")
 			$socialProfile = $db->real_escape_string($socialProfile);
 			$instantMessage = $db->real_escape_string($instantMessage);
 			
-			$query = "insert into contact values (NULL,'".$firstName."', '".$lastName."', '".$company."', '".$phone."', '".$email."', '".$url."', '".$address."', '".$birthday."', '".$date."', '".$related."', '".$socialProfile."', '".$instantMessage."')";
-			$result = $db->query($query);
+			$query = "INSERT INTO contact VALUES (NULL,?,?,?,?,?,?,?,?,?,?,?,?)";
+			$stmt = $db->prepare($query);
+			$stmt->bind_param("sssissssssss", $firstName, $lastName,$company,$phone,$email,$url,$address,$birthday,$date,$related,$socialProfile,$instantMessage);
+			$result = $stmt->execute();
+			$stmt->close();
 			if($result)
 			{
-				echo $db->affected_rows()." contact added successfully<br>";
+				echo "Contact added successfully<br>";
 				$newID = $db->insert_id();
-				$query = "insert into contact_user values ('".$newID."', '".$userid."')";
-				$result = $db->query($query);
+				
+				$query = "INSERT INTO contact_user (ContactID,UserID) VALUES (?,?)";
+				$stmt = $db->prepare($query);
+				$stmt->bind_param("ii", $newID, $userid);
+				$result = $stmt->execute();
+				$stmt->close();
+				if(!$result)
+				{
+					throw new UnexpectedValueException('Query result has a error');
+				}
 			}
 			else
 			{

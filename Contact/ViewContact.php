@@ -15,8 +15,12 @@ $contactID = isset($_GET['contactID']) ? (int)$_GET['contactID'] : false;
 $contactID = str_replace('/[^0-9]/', '', $contactID);
 try
 {
-	$query = "SELECT `ContactID`, `FirstName`, `LastName`, `Company`, `Phone`, `Email`, `Url`, `Address`, `Birthday`, `Date`, `Related`, `SocialProfile`, `InstantMessage` FROM `contact` WHERE `ContactID` = '".$contactID."'";
-	$result = $db->query($query);
+	$query = "SELECT `ContactID`, `FirstName`, `LastName`, `Company`, `Phone`, `Email`, `Url`, `Address`, `Birthday`, `Date`, `Related`, `SocialProfile`, `InstantMessage` FROM `contact` WHERE `ContactID` = ?";
+	$stmt = $db->prepare($query);
+	$stmt->bind_param("i", $contactID);
+	$stmt->execute();
+	$result = $stmt->get_result();
+	$stmt->close();
 	if(!$result){
 		throw new UnexpectedValueException('Query result has a error');
 	}

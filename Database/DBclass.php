@@ -2,11 +2,10 @@
 //http://stackoverflow.com/questions/5280347/autoload-classes-from-different-folders
 //http://stackoverflow.com/questions/7713072/how-can-i-load-classes-from-multiple-directories-with-autoload
 namespace Database;
-require_once $_SERVER['DOCUMENT_ROOT']."/AddressBook/".'AutoLoad.php';
 
 class DBclass implements Adapter\IDatabase
 {
-	private $db;
+	public $db;
 	private $type;
 	function __construct($typeDB, $connData)
 	{
@@ -117,6 +116,10 @@ class DBclass implements Adapter\IDatabase
 	public function real_escape_string($escapestr)
 	{
 		return $this->db->real_escape_string($escapestr);
+	}
+	public function prepare($query)
+	{
+		return $this->db->prepare($query);
 	}
 }
 

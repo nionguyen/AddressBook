@@ -33,8 +33,11 @@ try
 	$socialProfile = $db->real_escape_string($socialProfile);
 	$instantMessage = $db->real_escape_string($instantMessage);
 			
-	$query = "UPDATE `contact` SET `ContactID`='".$contactID."'".",`FirstName`='".$firstName."'".",`LastName`='".$lastName."'".",`Company`='".$company."'".",`Phone`='".$phone."'".",`Email`='".$email."'".",`Url`='".$url."'".",`Address`='".$address."'".",`Birthday`='".$birthday."'".",`Date`='".$date."'".",`Related`='".$related."'".",`SocialProfile`='".$socialProfile."'".",`InstantMessage`='".$instantMessage."'"." WHERE `ContactID` = '".$contactID."'";
-	$result = $db->query($query);
+	$query = "UPDATE `contact` SET `ContactID`= ?,`FirstName`= ?,`LastName`= ?,`Company`= ?,`Phone`= ?,`Email`= ?,`Url`= ?,`Address`= ?,`Birthday`= ?,`Date`= ?,`Related`= ?,`SocialProfile`= ?,`InstantMessage`= ? WHERE `ContactID` = ?";
+	$stmt = $db->prepare($query);
+	$stmt->bind_param("isssissssssssi", $contactID,$firstName,$lastName,$company,$phone,$email,$url,$address,$birthday,$date,$related,$socialProfile,$instantMessage,$contactID);
+	$result = $stmt->execute();
+	$stmt->close();
 	if($result)
 		echo "Edited Sucessfully";
 	else

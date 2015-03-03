@@ -10,14 +10,17 @@ $contactID = isset($_POST['contactID']) ? (int)$_POST['contactID'] : false;
 $contactID = str_replace('/[^0-9]/', '', $contactID);
 try
 {
-	//$query = "DELETE FROM `contact_user` WHERE `ContactID` = '".$contactID."'"."and `UserID` = '".$userid."';";
-	//$query .= "DELETE FROM `contact` WHERE `ContactID` = '".$contactID."'";
-	//$db->multi_query($query);
+	$query1 = "DELETE FROM `contact_user` WHERE `ContactID` = ? and `UserID` = ?";
+	$stmt = $db->prepare($query1);
+	$stmt->bind_param("ii", $contactID, $userid);
+	$result1 = $stmt->execute();
+	$stmt->close();
 	
-	$query1 = "DELETE FROM `contact_user` WHERE `ContactID` = '".$contactID."'"."and `UserID` = '".$userid."';";
-	$query2 = "DELETE FROM `contact` WHERE `ContactID` = '".$contactID."'";
-	$result1 = $db->query($query1);
-	$result2 = $db->query($query2);
+	$query2 = "DELETE FROM `contact` WHERE `ContactID` = ?";
+	$stmt = $db->prepare($query2);
+	$stmt->bind_param("i", $contactID);
+	$result2 = $stmt->execute();
+	$stmt->close();
 	
 	if($result1 && $result2)
 		echo "Deleted Sucessfully";

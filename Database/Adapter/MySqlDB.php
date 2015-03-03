@@ -1,10 +1,9 @@
 <?php
 namespace Database\Adapter;
-require_once $_SERVER['DOCUMENT_ROOT']."/AddressBook/".'AutoLoad.php';
 //http://php.net/manual/en/ref.mysql.php
 class MySqlDB implements IDatabase
 {
-	private $db;
+	public $db;
 	public function connect($server='', $username='', $password='', $dbName='')
 	{
 		if(strcmp($server,"") == 0)
@@ -24,7 +23,7 @@ class MySqlDB implements IDatabase
 	
 	public function error()
 	{
-		return mysqli_connect_errno();
+		return $this->db->error;//mysqli_connect_errno();
 	}
 	
     public function query($query)
@@ -71,6 +70,10 @@ class MySqlDB implements IDatabase
 	public function real_escape_string($escapestr)
 	{
 		return $this->db->real_escape_string($escapestr);
+	}
+	public function prepare($query)
+	{
+		return $this->db->prepare($query);
 	}
 }
 

@@ -21,14 +21,18 @@ if($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST["myusername"]) && isset(
 	$mypassword 			= $_POST["mypassword"];
 	if(!empty($myusername) && !empty($mypassword))
 	{
-
 		try
 		{
 			require_once '../Config.php';
 			$myusername = $db->real_escape_string($myusername);
 			$mypassword = $db->real_escape_string($mypassword);
-			$query = "insert into user values (NULL,'".$myusername."', sha1('".$mypassword."'))";
-			$result = $db->query($query);
+			
+			$query = "INSERT INTO user (UserID,UserName,Password) VALUES (NULL, ? , sha1(?) )";
+			$stmt = $db->prepare($query);
+			$stmt->bind_param("ss", $myusername, $mypassword);
+			$result = $stmt->execute();
+			$stmt->close();
+			
 			if($result)
 			{
 				echo "Register Successfully!";

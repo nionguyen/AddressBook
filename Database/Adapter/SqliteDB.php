@@ -1,7 +1,6 @@
 <?php
 //http://php.net/manual/en/book.sqlite3.php
 namespace Database\Adapter;
-require_once $_SERVER['DOCUMENT_ROOT']."/AddressBook/".'AutoLoad.php';
 class SqliteDB implements IDatabase
 {
 	private $db;
@@ -47,12 +46,19 @@ class SqliteDB implements IDatabase
 	}
 	public function insert_id()
 	{
+		throw new Exception('This Database type is not support this function');
 	}
 	public function multi_query($query)
 	{
+		throw new Exception('This Database type is not support this function');
 	}
 	public function real_escape_string($escapestr)
 	{
+		throw new Exception('This Database type is not support this function');
+	}
+	public function prepare($query)
+	{
+		throw new Exception('This Database type is not support this function');
 	}
 }
 

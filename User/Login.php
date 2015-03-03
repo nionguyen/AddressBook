@@ -25,8 +25,14 @@ if($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST["myusername"]) && isset(
 			require_once '../Config.php';
 			$myusername = $db->real_escape_string($myusername);
 			$mypassword = $db->real_escape_string($mypassword);
-			$query = "SELECT `UserID`, `UserName`, `Password` FROM `user` WHERE `UserName` = '".$myusername."'"." and `Password` = sha1('".$mypassword."')";
-			$result = $db->query($query);
+			
+			$query = "SELECT `UserID`, `UserName`, `Password` FROM `user` WHERE `UserName` = ? and `Password` = sha1(?)";
+			$stmt = $db->prepare($query);
+			$stmt->bind_param("ss", $myusername, $mypassword);
+			$stmt->execute();
+			$result = $stmt->get_result();
+			$stmt->close();
+			
 			if(!$result)
 			{
 				throw new UnexpectedValueException('Query result has a error');

@@ -24,8 +24,12 @@ try
 		$contactUser = $db->fetch_assoc($contactUsers);
 		$contactID = $contactUser['ContactID'];
 		
-		$query = "SELECT * FROM `contact` WHERE `ContactID` = '".$contactID."'";
-		$contacts = $db->query($query);
+		$query = "SELECT * FROM `contact` WHERE `ContactID` = ?";
+		$stmt = $db->prepare($query);
+		$stmt->bind_param("i", $contactID);
+		$stmt->execute();
+		$contacts = $stmt->get_result();
+		$stmt->close();
 		$contact = $db->fetch_assoc($contacts);
 		
 		$name = $contact['FirstName']." ".$contact['LastName'];

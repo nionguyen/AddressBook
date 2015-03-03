@@ -27,6 +27,7 @@ spl_autoload_register(function ($class_name) {
 */
 
 ///WAY 2///
+
 spl_autoload_register(function ($class_name) {
 	$class = $_SERVER['DOCUMENT_ROOT']."/AddressBook/".str_replace('\\', '/', strtolower($class_name)).".php";
 	if (is_readable($class))
@@ -34,4 +35,5 @@ spl_autoload_register(function ($class_name) {
 			require_once $class;
 	}
 });
+
 ?>
