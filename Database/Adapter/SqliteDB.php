@@ -26,15 +26,19 @@ class SqliteDB implements IDatabase
 	}		
     public function fetch_row($result)
 	{
+		throw new Exception('This Database type is not supported this function');
 	}		
     public function fetch_assoc($result)
 	{
+		throw new Exception('This Database type is not supported this function');
 	}		
     public function fetch_object($result)
 	{
+		throw new Exception('This Database type is not supported this function');
 	}		
     public function num_rows($result)
 	{
+		throw new Exception('This Database type is not supported this function');
 	}
 	public function affected_rows()
 	{
@@ -46,19 +50,19 @@ class SqliteDB implements IDatabase
 	}
 	public function insert_id()
 	{
-		throw new Exception('This Database type is not support this function');
+		throw new Exception('This Database type is not supported this function');
 	}
 	public function multi_query($query)
 	{
-		throw new Exception('This Database type is not support this function');
+		throw new Exception('This Database type is not supported this function');
 	}
 	public function real_escape_string($escapestr)
 	{
-		throw new Exception('This Database type is not support this function');
+		throw new Exception('This Database type is not supported this function');
 	}
 	public function prepare($query)
 	{
-		throw new Exception('This Database type is not support this function');
+		throw new Exception('This Database type is not supported this function');
 	}
 }
 
