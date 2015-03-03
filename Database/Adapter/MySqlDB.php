@@ -3,7 +3,7 @@ namespace Database\Adapter;
 //http://php.net/manual/en/ref.mysql.php
 class MySqlDB implements IDatabase
 {
-	public $db;
+	private $db;
 	public function connect($server='', $username='', $password='', $dbName='')
 	{
 		if(strcmp($server,"") == 0)

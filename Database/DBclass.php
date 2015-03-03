@@ -5,7 +5,7 @@ namespace Database;
 
 class DBclass implements Adapter\IDatabase
 {
-	public $db;
+	private $db;
 	private $type;
 	function __construct($typeDB, $connData)
 	{
