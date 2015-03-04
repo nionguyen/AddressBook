@@ -31,9 +31,9 @@ try {
         throw new UnexpectedValueException('Query contactUsers has a error');
     }
     
-    $ctCount = $db->num_rows($contactUsers);
+    $ctCount = $contactUsers->num_rows();
     for ($i = 0; $i < $ctCount; $i++) {
-        $contactUser = $db->fetch_assoc($contactUsers);
+        $contactUser = $contactUsers->fetch_assoc();
         $contactID = $contactUser['contactID'];
 		
         $query = "SELECT `contactID`,
@@ -56,7 +56,7 @@ try {
         $stmt->execute();
         $result = $stmt->get_result();
         $stmt->close();
-        $contact = $db->fetch_assoc($result);
+        $contact = $result->fetch_assoc();
         
         $firstName          = $contact['firstName'];
 		$lastName           = $contact['lastName'];

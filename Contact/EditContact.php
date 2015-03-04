@@ -29,7 +29,7 @@ try {
     if(!$result) {
         throw new UnexpectedValueException('Query result has a error');
     }
-    $row = $db->fetch_assoc($result);
+    $row = $result->fetch_assoc();
 } catch (Exception $e) {
     echo "Error: ".$e->getMessage()." in ".$e->getFile()." on line ".$e->getLine()."<br />" ;
     exit;

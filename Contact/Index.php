@@ -20,9 +20,9 @@ try {
     }
     
 	echo "<br> All Contacts <br>";
-    $ctCount = $db->num_rows($contactUsers);
+    $ctCount = $contactUsers->num_rows();
     for ($i = 0; $i < $ctCount; $i++) {
-        $contactUser = $db->fetch_assoc($contactUsers);
+        $contactUser = $contactUsers->fetch_assoc();
         $contactID = $contactUser['contactID'];
         
         $query = "SELECT * 
@@ -33,8 +33,7 @@ try {
         $stmt->execute();
         $contacts = $stmt->get_result();
         $stmt->close();
-        $contact = $db->fetch_assoc($contacts);
-        
+        $contact = $contacts->fetch_assoc();
         $name = $contact['firstName']." ".$contact['lastName'];
         if(empty($contact['firstName']) && empty($contact['lastName'])) {
             $name = "#noname";

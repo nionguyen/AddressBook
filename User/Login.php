@@ -37,10 +37,10 @@ if($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST["myusername"]) && isset(
                 exit;
             }
 			
-            $numResults = $db->num_rows($result);
+            $numResults = $result->num_rows();
             if ($numResults > 0) {
                 echo 'Login Successfully!';
-                $row = $db->fetch_assoc($result);       
+                $row = $result->fetch_assoc();       
                 $_SESSION['userID'] = $row['userID'];
                 $filePath = '../Contact/index.php';
                 header('Location: '.$filePath) and exit;

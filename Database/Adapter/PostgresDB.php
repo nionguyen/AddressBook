@@ -31,7 +31,10 @@ class PostgresDB implements IDatabase
     {
         return pg_query($this->db, $query);
     }
-	
+	public function prepare($query)
+	{
+	}
+	/*
     public function fetch_array($result, $array_type)
     {
         return pg_fetch_array($result, NULL, array_type);
@@ -56,6 +59,7 @@ class PostgresDB implements IDatabase
     {
         return pg_num_rows($result);
     }
+	*/
 	
     public function affected_rows()
     {
@@ -82,10 +86,6 @@ class PostgresDB implements IDatabase
         throw new Exception('This Database type is not supported this function');
     }
 	
-    public function prepare($query)
-    {
-        throw new Exception('This Database type is not supported this function');
-    }
 }
 
 ?>

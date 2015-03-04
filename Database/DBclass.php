@@ -7,11 +7,13 @@ class DBClass implements Adapter\IDatabase
 {
     private $db;
     private $type;
-    
+    private $connData;
+	
     function __construct($typeDB, $connData)
     {
+		$this->connData = $connData;
         $this->switchDB($typeDB);
-        $this->connect($connData);
+        $this->connect();
     }
 	
     function __destruct()
@@ -42,29 +44,29 @@ class DBClass implements Adapter\IDatabase
         }
     }
 	
-    public function connect($connData='')
+    public function connect()
     {
         switch ($this->type) {
             case Adapter\TypeDB::MYSQL: {
                 $this->db->connect(
-                                $connData->dbhost,
-                                $connData->user,
-                                $connData->pass,
-                                $connData->dbname
+                                $this->connData->dbhost,
+                                $this->connData->user,
+                                $this->connData->pass,
+                                $this->connData->dbname
                 );
                 break;
             }
             case Adapter\TypeDB::POSTGRES: {
                 $this->db->connect(
-                                $connData->dbhost,
-                                $connData->user,
-                                $connData->pass,
-                                $connData->dbname
+                                $this->connData->dbhost,
+                                $this->connData->user,
+                                $this->connData->pass,
+                                $this->connData->dbname
                 );
                 break;
             }
             case Adapter\TypeDB::SQLITE: {
-                $this->db->connect($connData->location);
+                $this->db->connect($this->connData->location);
                 break;
             }
             default: {
@@ -81,9 +83,17 @@ class DBClass implements Adapter\IDatabase
 	
     public function query($query)
     {
-        return $this->db->query($query);
+		if($this->db) {
+			$this->connect();
+		}
+		return $this->db->query($query);
+        /*$result = $this->db->query($query);
+		if(!$result)
+			throw new \Exception("sss");
+		return $result;*/
     }
 	
+	/*
     public function fetch_array($result, $array_type)
     {
         return $this->db->fetch_array($result, $array_type);
@@ -108,7 +118,7 @@ class DBClass implements Adapter\IDatabase
     {
         return $this->db->num_rows($result);
     }
-	
+	*/
     public function affected_rows()
     {
         return $this->db->affected_rows();

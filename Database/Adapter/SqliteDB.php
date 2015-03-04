@@ -23,7 +23,10 @@ class SqliteDB implements IDatabase
     {
         return $this->db->query($query);
     }
-	
+	public function prepare($query)
+	{
+	}
+	/*
     public function fetch_array($result, $array_type)
     {
         return $this->result->fetchArray(array_type);
@@ -48,7 +51,7 @@ class SqliteDB implements IDatabase
     {
         throw new Exception('This Database type is not supported this function');
     }
-	
+	*/
     public function affected_rows()
     {
         return $this->db->affected_rows;
@@ -70,11 +73,6 @@ class SqliteDB implements IDatabase
     }
 	
     public function real_escape_string($escapeStr)
-    {
-        throw new Exception('This Database type is not supported this function');
-    }
-	
-    public function prepare($query)
     {
         throw new Exception('This Database type is not supported this function');
     }

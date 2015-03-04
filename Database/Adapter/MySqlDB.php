@@ -27,9 +27,15 @@ class MySqlDB implements IDatabase
     
     public function query($query)
     {
-        return $this->db->query($query);
+		$result = $this->db->query($query);
+		return new DBStatement\DBStatement($this->db, $query, $result);
     }
-	
+	public function prepare($query)
+	{
+		$stmt = $this->db->prepare($query);
+		return new DBStatement\DB_STMT($this->db, $query, $stmt);
+	}
+	/*
     public function fetch_array($result, $array_type)
     {
         return $result->fetch_array($array_type);
@@ -54,7 +60,7 @@ class MySqlDB implements IDatabase
     {
         return $result->num_rows;
     }
-	
+	*/
     public function affected_rows()
     {
         return $this->db->affected_rows;
@@ -78,11 +84,6 @@ class MySqlDB implements IDatabase
     public function real_escape_string($escapeStr)
     {
         return $this->db->real_escape_string($escapeStr);
-    }
-	
-    public function prepare($query)
-    {
-        return $this->db->prepare($query);
     }
 }
 
