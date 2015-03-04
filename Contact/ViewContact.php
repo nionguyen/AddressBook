@@ -1,54 +1,65 @@
 <html>
 <body>
 <?php
-
-function writeString($string,$value) {
-    if($value)
-	{
-		echo $string.":".$value."<br>";
-	}
-}
-
 require_once '../Config.php';
 
-$contactID = isset($_GET['contactID']) ? (int)$_GET['contactID'] : false;
-$contactID = str_replace('/[^0-9]/', '', $contactID);
-try
-{
-	$query = "SELECT `ContactID`, `FirstName`, `LastName`, `Company`, `Phone`, `Email`, `Url`, `Address`, `Birthday`, `Date`, `Related`, `SocialProfile`, `InstantMessage` FROM `contact` WHERE `ContactID` = ?";
-	$stmt = $db->prepare($query);
-	$stmt->bind_param("i", $contactID);
-	$stmt->execute();
-	$result = $stmt->get_result();
-	$stmt->close();
-	if(!$result){
-		throw new UnexpectedValueException('Query result has a error');
-	}
-	$row = $db->fetch_assoc($result);
-}
-catch (Exception $e)
-{
-	echo "Error: ".$e->getMessage()." in ".$e->getFile()." on line ".$e->getLine()."<br />" ;
-	exit;
+function writeString($string,$value) {
+    if($value) {
+        echo $string.":".$value."<br>";
+    }
 }
 
-$firstName			= $row['FirstName'];
-$lastName 			= $row['LastName'];
-$company 			= $row['Company'];
-$phone 				= $row['Phone'];
-$email 				= $row['Email'];
-$url 				= $row['Url'];
-$address 			= $row['Address'];
-$birthday 			= $row['Birthday'];
-$date 				= $row['Date'];
-$related 			= $row['Related'];
-$socialProfile 		= $row['SocialProfile'];
-$instantMessage 	= $row['InstantMessage'];
-if(empty($firstName) && empty($lastName))
+$contactID = $_GET["contactID"];
+try
 {
-	$firstName = "#noname";
-	$lastName = "#noname";
+    $query = "SELECT `ContactID`,
+                     `firstName`,
+					 `lastName`,
+					 `company`,
+					 `phone`,
+					 `email`,
+					 `url`,
+					 `address`,
+					 `birthday`,
+					 `date`,
+					 `related`,
+					 `socialProfile`,
+					 `instantMessage`
+	          FROM `contact`
+			  WHERE `ContactID` = ?";
+    $stmt = $db->prepare($query);
+    $stmt->bind_param("i", $contactID);
+    $stmt->execute();
+    $result = $stmt->get_result();
+    $stmt->close();
+	
+    if(!$result) {
+        throw new UnexpectedValueException('Query result has a error');
+    }
+    $row = $db->fetch_assoc($result);
+} catch (Exception $e) {
+    echo "Error: ".$e->getMessage()." in ".$e->getFile()." on line ".$e->getLine()."<br />" ;
+    exit;
 }
+
+$firstName          = $row['firstName'];
+$lastName           = $row['lastName'];
+$company            = $row['company'];
+$phone              = $row['phone'];
+$email              = $row['email'];
+$url                = $row['url'];
+$address            = $row['address'];
+$birthday           = $row['birthday'];
+$date               = $row['date'];
+$related            = $row['related'];
+$socialProfile      = $row['socialProfile'];
+$instantMessage     = $row['instantMessage'];
+
+if(empty($firstName) && empty($lastName)) {
+    $firstName = "#noname";
+    $lastName = "#noname";
+}
+
 writeString("First",$firstName);
 writeString("Last",$lastName);
 writeString("Company",$company);

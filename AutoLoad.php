@@ -4,20 +4,20 @@
 //define("AP_SITE", "localhost/AddressBook/");
 /*
 spl_autoload_register(function ($class_name) {
-	//List all the class directories in the array.
+    //List all the class directories in the array.
     $array_paths = array(
-		'Contact/',
+        'Contact/',
         'Database/',
-		'Database/Adapter/',
-		'User/'
+        'Database/Adapter/',
+        'User/'
     );
 
-	$file_name = ($class_name).'.php';
+    $file_name = ($class_name).'.php';
 
     for ($i = 0; $i < count($array_paths); $i++) 
     {
-		//$path = AP_SITE.$array_paths[$i].$file_name;
-		$path = $_SERVER['DOCUMENT_ROOT']."/AddressBook/".$array_paths[$i].$file_name;
+        //$path = AP_SITE.$array_paths[$i].$file_name;
+        $path = $_SERVER['DOCUMENT_ROOT']."/AddressBook/".$array_paths[$i].$file_name;
         if(file_exists($path)) 
         {
             require_once $path;
@@ -29,11 +29,13 @@ spl_autoload_register(function ($class_name) {
 ///WAY 2///
 
 spl_autoload_register(function ($class_name) {
-	$class = $_SERVER['DOCUMENT_ROOT']."/AddressBook/".str_replace('\\', '/', strtolower($class_name)).".php";
-	if (is_readable($class))
-	{
-			require_once $class;
-	}
+    $class = $_SERVER['DOCUMENT_ROOT']
+	         .'/AddressBook/'
+			 .str_replace('\\', '/', strtolower($class_name))
+			 .'.php';
+    if (is_readable($class)) {
+        require_once $class;
+    }
 });
 
 ?>

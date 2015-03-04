@@ -1,17 +1,19 @@
 <?php
 namespace Database\Adapter;
+
 class PostgresConn extends AbstractConnData
 {
-	public $server;
-	public $username;
-	public $password;
-	public $dbName;
-	function __construct($server, $username, $password, $dbName)
-	{
-		$this->server 	= $server;
-		$this->username = $username;
-		$this->password = $password;
-		$this->dbName 	= $dbName;
-	}
+    public $dbhost;
+    public $user;
+    public $pass;
+    public $dbname;
+	
+    function __construct($dbhost, $user, $pass, $dbname)
+    {
+        $this->dbhost   = $dbhost;
+        $this->user     = $user;
+        $this->pass     = $pass;
+        $this->dbname   = $dbname;
+    }
 }
 ?>
