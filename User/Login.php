@@ -42,6 +42,11 @@ if($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST["myusername"]) && isset(
                 echo 'Login Successfully!';
                 $row = $result->fetch_assoc();       
                 $_SESSION['userID'] = $row['userID'];
+				
+				$userid = $row['userID'];
+				$cookie = new Cookie($userid);
+				$cookie->set();
+				
                 $filePath = '../Contact/index.php';
                 header('Location: '.$filePath) and exit;
             } else {

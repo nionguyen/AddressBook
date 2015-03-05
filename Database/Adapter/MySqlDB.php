@@ -28,39 +28,15 @@ class MySqlDB implements IDatabase
     public function query($query)
     {
 		$result = $this->db->query($query);
-		return new DBStatement\DBStatement($this->db, $query, $result);
+		return new DBStatement\MysqlRsl($this->db, $query, $result);
     }
+	
 	public function prepare($query)
 	{
 		$stmt = $this->db->prepare($query);
-		return new DBStatement\DB_STMT($this->db, $query, $stmt);
+		return new DBStatement\MysqlStmt($this->db, $query, $stmt);
 	}
-	/*
-    public function fetch_array($result, $array_type)
-    {
-        return $result->fetch_array($array_type);
-    }
-	
-    public function fetch_row($result)
-    {
-        $result->fetch_row();
-    }
-	
-    public function fetch_assoc($result)
-    {
-        return $result->fetch_assoc();
-    }
-	
-    public function fetch_object($result)
-    {
-        return $result->fetch_object();
-    }
-	
-    public function num_rows($result)
-    {
-        return $result->num_rows;
-    }
-	*/
+
     public function affected_rows()
     {
         return $this->db->affected_rows;

@@ -1,12 +1,13 @@
 <?php
 namespace Database\Adapter\DBStatement;
 
-class DB_STMT 
+class PostgresStmt implements IStmt
 {
 	protected $stmt;
 	public $query;
 	protected $db;
-	
+	private $arr;
+	private $result; 
 	public function __construct($db, $query, $stmt) {
 		$this->query = $query;
 		$this->db = $db;
@@ -15,22 +16,26 @@ class DB_STMT
 	
 	public function bind_param($types,...$numbers)
 	{
-		return $this->stmt->bind_param($types,...$numbers);
+		$i = 0;
+		foreach ($numbers as $n) {
+			$this->arr[$i] = $n;
+			$i++;
+		}
 	}
 	
 	public function execute()
 	{
-		return $this->stmt->execute();
+		$this->result = pg_execute($this->db, "my_query", $this->arr);
+		return new PostgresRsl($this->db, $this->query, $this->result);
 	}
 	
     public function close()
 	{
-		$this->stmt->close();
 	}
 	
 	public function get_result()
 	{
-		return new DBStatement($this->db, $this->query, $this->stmt->get_result());
+		return new PostgresRsl($this->db, $this->query, $this->result);
 	}
 }
 ?>

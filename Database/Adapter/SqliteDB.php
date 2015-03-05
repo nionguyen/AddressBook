@@ -26,32 +26,6 @@ class SqliteDB implements IDatabase
 	public function prepare($query)
 	{
 	}
-	/*
-    public function fetch_array($result, $array_type)
-    {
-        return $this->result->fetchArray(array_type);
-    }
-	
-    public function fetch_row($result)
-    {
-        throw new Exception('This Database type is not supported this function');
-    }
-	
-    public function fetch_assoc($result)
-    {
-        throw new Exception('This Database type is not supported this function');
-    }
-	
-    public function fetch_object($result)
-    {
-        throw new Exception('This Database type is not supported this function');
-    }
-	
-    public function num_rows($result)
-    {
-        throw new Exception('This Database type is not supported this function');
-    }
-	*/
     public function affected_rows()
     {
         return $this->db->affected_rows;
