@@ -1,5 +1,5 @@
 <?php
-namespace Database\Adapter\Conn;
+namespace Database\Adapter;
 
 class MySqlConn extends AbstractConnData
 {

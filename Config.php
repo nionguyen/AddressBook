@@ -10,7 +10,7 @@ $dbname    = $iniArray["dbname"];
 $dbtype    = $iniArray["dbtype"];
 
 try {
-    $db = new Database\DBClass($dbtype,new Database\Adapter\Conn\MySqlConn($dbhost, $user, $pass, $dbname));
+    $db = new Database\DBClass($dbtype,new Database\Adapter\MySqlConn($dbhost, $user, $pass, $dbname));
 } catch (Exception $e) {
     echo "Error: ".$e->getMessage()." in ".$e->getFile()." on line ".$e->getLine()."<br />" ;
     exit;

@@ -1,7 +1,7 @@
 <?php
 namespace Database\Adapter\DBStatement;
 
-class PostgresRsl implements IResult 
+class DBStatement 
 {
 	protected $result;
 	public $query;
@@ -13,9 +13,19 @@ class PostgresRsl implements IResult
 		$this->result = $result;
 	}
 	
+	public function bind_param($types , &$var1)
+	{
+		return $this->result->bind_param($types,$var1);
+	}
+	
+	public function executed()
+	{
+		$this->result->executed();
+	}
+	
     public function fetch_array($array_type)
 	{
-		return pg_fetch_array($this->result, NULL, $array_type);
+		return $this->result->fetch_array($array_type);
 	}
 	
     public function fetch_row()
@@ -23,21 +33,21 @@ class PostgresRsl implements IResult
 		if(!$this->result) {
 			throw new Exception("Query not executed");
 		}
-		return pg_fetch_row($this->result);
+		return $this->result->fetch_row();
 	}
 	
     public function fetch_assoc()
 	{
-		return pg_fetch_assoc($this->result);
+		return $this->result->fetch_assoc();
 	}		
     public function fetch_object()
 	{
-		return pg_fetch_object($this->result);
+		return $this->result->fetch_object();
 	}
 
 	public function num_rows()
     {
-        return pg_num_rows($this->result);
+        return $this->result->num_rows;
     }
 	
     public function close()

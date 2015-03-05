@@ -1,5 +1,5 @@
 <?php
-namespace Database\Adapter\Conn;
+namespace Database\Adapter;
 
 class PostgresConn extends AbstractConnData
 {
