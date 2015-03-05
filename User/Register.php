@@ -24,7 +24,7 @@ if($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST["myusername"]) && isset(
             $query = "INSERT INTO user (userID,
 			                            username,
 										password) 
-			          VALUES (NULL, ? , sha1(?) )";
+			          VALUES (null, ? , sha1(?) )";
             $stmt = $db->prepare($query);
             $stmt->bind_param("ss", $myusername, $mypassword);
             $result = $stmt->execute();

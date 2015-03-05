@@ -36,7 +36,7 @@ for ($i=0; $i <$num_results; $i++)
 ///////EXECUTE
 $query = 'SELECT * FROM company WHERE address = $1';
 $stmt = $db->prepare($query);
-$stmt->bind_param(NUll,"Norway");
+$stmt->bind_param(null,"Norway");
 $stmt->execute();
 $result = $stmt->get_result();
 for ($i=0; $i <$num_results; $i++)

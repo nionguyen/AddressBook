@@ -15,7 +15,7 @@ class PostgresRsl implements IResult
 	
     public function fetch_array($array_type)
 	{
-		return pg_fetch_array($this->result, NULL, $array_type);
+		return pg_fetch_array($this->result, null, $array_type);
 	}
 	
     public function fetch_row()

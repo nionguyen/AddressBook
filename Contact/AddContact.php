@@ -9,7 +9,7 @@
 require_once '../User/issetLogin.php';
 
 $phoneErr = "";
-$havingErr = FALSE;
+$havingErr = false;
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     require_once '../Config.php';
 
@@ -19,7 +19,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $phone              = $_POST["phone"];
     if(!empty($phone) && preg_match("/^[0-9]+$/",$phone) != 1) {
         $phoneErr = " Phone number must be numeric";
-        $havingErr = TRUE;
+        $havingErr = true;
     }
     $email              = $_POST["email"];
     $url                = $_POST["url"];
@@ -34,7 +34,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         try {
             
             $query = "INSERT INTO contact
-			          VALUES (NULL,?,?,?,?,?,?,?,?,?,?,?,?)";
+			          VALUES (null,?,?,?,?,?,?,?,?,?,?,?,?)";
             $stmt = $db->prepare($query);
             $stmt->bind_param("sssissssssss", $firstName, $lastName,$company,$phone,$email,$url,$address,$birthday,$date,$related,$socialProfile,$instantMessage);
             $result = $stmt->execute();
