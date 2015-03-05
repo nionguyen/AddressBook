@@ -1,5 +1,5 @@
 <?php
-namespace Database\Adapter;
+namespace Database\Adapter\Conn;
 
 class SqliteConn extends AbstractConnData
 {

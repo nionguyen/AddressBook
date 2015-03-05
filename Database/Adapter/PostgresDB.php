@@ -24,43 +24,20 @@ class PostgresDB implements IDatabase
     
     public function error()
     {
-        return pg_result_error($this->db);
+        //return pg_result_error($this->db);
     }
     
     public function query($query)
-    {
-        return pg_query($this->db, $query);
+    {		
+		$result = pg_query($this->db, $query);
+		return new DBStatement\PostgresRsl($this->db, $query, $result);
     }
 	public function prepare($query)
 	{
+		$result = pg_prepare($this->db, "my_query", $query);
+		return new DBStatement\PostgresStmt($this->db, $query, $result);
 	}
-	/*
-    public function fetch_array($result, $array_type)
-    {
-        return pg_fetch_array($result, NULL, array_type);
-    }
-	
-    public function fetch_row($result)
-    {
-        return pg_fetch_row($result);
-    }
-	
-    public function fetch_assoc($result)
-    {
-        return pg_fetch_assoc($result);
-    }
-	
-    public function fetch_object($result)
-    {
-        return pg_fetch_object($result);
-    }
-	
-    public function num_rows($result)
-    {
-        return pg_num_rows($result);
-    }
-	*/
-	
+
     public function affected_rows()
     {
         return pg_affected_rows($result);

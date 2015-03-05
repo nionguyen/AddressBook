@@ -87,38 +87,7 @@ class DBClass implements Adapter\IDatabase
 			$this->connect();
 		}
 		return $this->db->query($query);
-        /*$result = $this->db->query($query);
-		if(!$result)
-			throw new \Exception("sss");
-		return $result;*/
     }
-	
-	/*
-    public function fetch_array($result, $array_type)
-    {
-        return $this->db->fetch_array($result, $array_type);
-    }
-	
-    public function fetch_row($result)
-    {
-        return $this->db->fetch_row($result);
-    }
-	
-    public function fetch_assoc($result)
-    {
-        return $this->db->fetch_assoc($result);
-    }
-	
-    public function fetch_object($result)
-    {
-        return $this->db->fetch_object($result);
-    }
-	
-    public function num_rows($result)
-    {
-        return $this->db->num_rows($result);
-    }
-	*/
     public function affected_rows()
     {
         return $this->db->affected_rows();
