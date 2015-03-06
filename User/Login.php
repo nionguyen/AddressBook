@@ -2,8 +2,8 @@
 <head>
 </head>
 <body>
+<a href="http://localhost/AddressBook/User/Register.php"> Register</a>
 <?php
-session_start();
 
 function formLogin() {
     echo
@@ -16,16 +16,19 @@ function formLogin() {
 if($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST["myusername"]) && isset($_POST["mypassword"])) {
     $myusername = $_POST["myusername"];
     $mypassword = $_POST["mypassword"];
+    $uri = $_REQUEST['originating_uri'];
+
     if(!empty($myusername) && !empty($mypassword)) {
         try {
             require_once '../Config.php';
             
+    
             $query = "SELECT `userID`,
                              `username`,
-							 `password` 
-			          FROM `user`
-					  WHERE `username` = ? 
-					  AND `password` = sha1(?)";
+                             `password` 
+                      FROM `user`
+                      WHERE `username` = ? 
+                      AND `password` = sha1(?)";
             $stmt = $db->prepare($query);
             $stmt->bind_param("ss", $myusername, $mypassword);
             $stmt->execute();
@@ -36,19 +39,26 @@ if($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST["myusername"]) && isset(
                 throw new UnexpectedValueException('Query result has a error');
                 exit;
             }
-			
+            
             $numResults = $result->num_rows();
             if ($numResults > 0) {
                 echo 'Login Successfully!';
-                $row = $result->fetch_assoc();       
-                $_SESSION['userID'] = $row['userID'];
-				
-				$userid = $row['userID'];
-				$cookie = new Cookie($userid);
-				$cookie->set();
-				
-                $filePath = '../Contact/index.php';
-                header('Location: '.$filePath) and exit;
+                
+                $row = $result->fetch_assoc();                      
+                $userid = $row['userID'];
+                $cookie = new Cookie($userid);
+                $cookie->set();
+                
+                if(empty($uri))
+                {
+                    header("Location: http://localhost/AddressBook/Contact/index.php");
+                }
+                else
+                {
+                    $filePath = 'http://localhost'.$uri;
+                    header('Location: '.$filePath) and exit;
+                }
+                
             } else {
                 formLogin();
                 if (!empty($myusername) || !empty($mypassword)) {
@@ -56,24 +66,21 @@ if($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST["myusername"]) && isset(
                 }
             }
         } catch (RuntimeException $e) {
-			echo "<table border=\"1\"><tr><td>".
-				 "RuntimeException: ".$e->getMessage()."<br />".
-				 " in ".$e->getFile()." on line ".$e->getLine().
-				 "</td></tr></table><br />";
-			exit;
-		} catch (InvalidArgumentException $e) {
-			echo "<table border=\"1\"><tr><td>".
-				 "InvalidArgumentException: ".$e->getMessage()."<br />".
-				 " in ".$e->getFile()." on line ".$e->getLine().
-				 "</td></tr></table><br />";
-			exit;
-		} catch (Exception $e) {
-			echo "<table border=\"1\"><tr><td>".
-				 "Exception: ".$e->getMessage()."<br />".
-				 " in ".$e->getFile()." on line ".$e->getLine().
-				 "</td></tr></table><br />";
-			exit;
-		}
+            $error = "RuntimeException: ".$e->getMessage()."<br />".
+                     " in ".$e->getFile()." on line ".$e->getLine();
+            writeError($userID, $error);
+            exit;
+        } catch (InvalidArgumentException $e) {
+            $error = "InvalidArgumentException: ".$e->getMessage()."<br />".
+                     " in ".$e->getFile()." on line ".$e->getLine();
+            writeError($userID, $error);
+            exit;
+        } catch (Exception $e) {
+            $error = "Exception: ".$e->getMessage()."<br />".
+                     " in ".$e->getFile()." on line ".$e->getLine();
+            writeError($userID, $error);
+            exit;
+        }
     } else {
         formLogin();
         if (!empty($myusername) || !empty($mypassword)) {

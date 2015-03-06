@@ -1,6 +1,7 @@
 <html>
 <body>
 <?php
+require_once $_SERVER['DOCUMENT_ROOT'].'/AddressBook/user/issetLogin.php';
 require_once '../Config.php';
 
 function writeString($string,$value) {
@@ -10,51 +11,81 @@ function writeString($string,$value) {
 }
 
 $contactID = $_GET["contactID"];
+
+try
+{
+    $query = "SELECT *
+              FROM `contact_user`
+              WHERE `ContactID` = ?
+              AND `userID` = ?";
+    $stmt = $db->prepare($query);
+    $stmt->bind_param("ii", $contactID, $userID);
+    $stmt->execute();
+    $result = $stmt->get_result();
+    $stmt->close();
+    if($result->num_rows() == 0) {
+        echo "You don't have permission to view this contact";
+        exit;
+    }
+} catch (RuntimeException $e) {
+    $error = "RuntimeException: ".$e->getMessage()."<br />".
+             " in ".$e->getFile()." on line ".$e->getLine();
+    writeError($userID, $error);
+    exit;
+} catch (InvalidArgumentException $e) {
+    $error = "InvalidArgumentException: ".$e->getMessage()."<br />".
+             " in ".$e->getFile()." on line ".$e->getLine();
+    writeError($userID, $error);
+    exit;
+} catch (Exception $e) {
+    $error = "Exception: ".$e->getMessage()."<br />".
+             " in ".$e->getFile()." on line ".$e->getLine();
+    writeError($userID, $error);
+    exit;
+}
+
 try
 {
     $query = "SELECT `ContactID`,
                      `firstName`,
-					 `lastName`,
-					 `company`,
-					 `phone`,
-					 `email`,
-					 `url`,
-					 `address`,
-					 `birthday`,
-					 `date`,
-					 `related`,
-					 `socialProfile`,
-					 `instantMessage`
-	          FROM `contact`
-			  WHERE `ContactID` = ?";
+                     `lastName`,
+                     `company`,
+                     `phone`,
+                     `email`,
+                     `url`,
+                     `address`,
+                     `birthday`,
+                     `date`,
+                     `related`,
+                     `socialProfile`,
+                     `instantMessage`
+              FROM `contact`
+              WHERE `ContactID` = ?";
     $stmt = $db->prepare($query);
     $stmt->bind_param("i", $contactID);
     $stmt->execute();
     $result = $stmt->get_result();
     $stmt->close();
-	
+    
     if(!$result) {
         throw new UnexpectedValueException('Query result has a error');
     }
     $row = $result->fetch_assoc();
 } catch (RuntimeException $e) {
-	echo "<table border=\"1\"><tr><td>".
-		 "RuntimeException: ".$e->getMessage()."<br />".
-		 " in ".$e->getFile()." on line ".$e->getLine().
-		 "</td></tr></table><br />";
-			exit;
+    $error = "RuntimeException: ".$e->getMessage()."<br />".
+             " in ".$e->getFile()." on line ".$e->getLine();
+    writeError($userID, $error);
+    exit;
 } catch (InvalidArgumentException $e) {
-	echo "<table border=\"1\"><tr><td>".
-		 "InvalidArgumentException: ".$e->getMessage()."<br />".
-		 " in ".$e->getFile()." on line ".$e->getLine().
-		 "</td></tr></table><br />";
-	exit;
+    $error = "InvalidArgumentException: ".$e->getMessage()."<br />".
+             " in ".$e->getFile()." on line ".$e->getLine();
+    writeError($userID, $error);
+    exit;
 } catch (Exception $e) {
-	echo "<table border=\"1\"><tr><td>".
-		 "Exception: ".$e->getMessage()."<br />".
-		 " in ".$e->getFile()." on line ".$e->getLine().
-		 "</td></tr></table><br />";
-	exit;
+    $error = "Exception: ".$e->getMessage()."<br />".
+             " in ".$e->getFile()." on line ".$e->getLine();
+    writeError($userID, $error);
+    exit;
 }
 
 $firstName          = $row['firstName'];

@@ -34,7 +34,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         try {
             
             $query = "INSERT INTO contact
-			          VALUES (null,?,?,?,?,?,?,?,?,?,?,?,?)";
+                      VALUES (null,?,?,?,?,?,?,?,?,?,?,?,?)";
             $stmt = $db->prepare($query);
             $stmt->bind_param("sssissssssss", $firstName, $lastName,$company,$phone,$email,$url,$address,$birthday,$date,$related,$socialProfile,$instantMessage);
             $result = $stmt->execute();
@@ -44,12 +44,12 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 $contactID = $db->insert_id();
                 
                 $query = "INSERT INTO contact_user (contactID,userID)
-				          VALUES (?,?)";
+                          VALUES (?,?)";
                 $stmt = $db->prepare($query);
                 $stmt->bind_param("ii", $contactID, $userID);
                 $result = $stmt->execute();
                 $stmt->close();
-				
+                
                 if(!$result) {
                     throw new UnexpectedValueException('Query result has a error');
                 }
@@ -57,24 +57,21 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 throw new UnexpectedValueException('Query result has a error');
             }
         } catch (RuntimeException $e) {
-			echo "<table border=\"1\"><tr><td>".
-				 "RuntimeException: ".$e->getMessage()."<br />".
-				 " in ".$e->getFile()." on line ".$e->getLine().
-				 "</td></tr></table><br />";
-			exit;
-		} catch (InvalidArgumentException $e) {
-			echo "<table border=\"1\"><tr><td>".
-				 "InvalidArgumentException: ".$e->getMessage()."<br />".
-				 " in ".$e->getFile()." on line ".$e->getLine().
-				 "</td></tr></table><br />";
-			exit;
-		} catch (Exception $e) {
-			echo "<table border=\"1\"><tr><td>".
-				 "Exception: ".$e->getMessage()."<br />".
-				 " in ".$e->getFile()." on line ".$e->getLine().
-				 "</td></tr></table><br />";
-			exit;
-		}
+            $error = "RuntimeException: ".$e->getMessage()."<br />".
+                     " in ".$e->getFile()." on line ".$e->getLine();
+            writeError($userID, $error);
+            exit;
+        } catch (InvalidArgumentException $e) {
+            $error = "InvalidArgumentException: ".$e->getMessage()."<br />".
+                     " in ".$e->getFile()." on line ".$e->getLine();
+            writeError($userID, $error);
+            exit;
+        } catch (Exception $e) {
+            $error = "Exception: ".$e->getMessage()."<br />".
+                     " in ".$e->getFile()." on line ".$e->getLine();
+            writeError($userID, $error);
+            exit;
+        }
     }
 }
 

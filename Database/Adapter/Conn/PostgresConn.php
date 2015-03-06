@@ -7,7 +7,7 @@ class PostgresConn extends AbstractConnData
     public $user;
     public $pass;
     public $dbname;
-	
+    
     function __construct($dbhost, $user, $pass, $dbname)
     {
         $this->dbhost   = $dbhost;

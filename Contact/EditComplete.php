@@ -19,47 +19,44 @@ $instantMessage     = $_POST["instantMessage"];
 
 try { 
     $query = "UPDATE `contact`
-	          SET `contactID`= ?,
-			      `firstName`= ?,
-				  `lastName`= ?,
-				  `company`= ?,
-				  `phone`= ?,
-				  `email`= ?,
-				  `url`= ?,
-				  `address`= ?,
-				  `birthday`= ?,
-				  `date`= ?,
-				  `related`= ?,
-				  `socialProfile`= ?,
-				  `instantMessage`= ?
-			  WHERE `contactID` = ?";
+              SET `contactID`= ?,
+                  `firstName`= ?,
+                  `lastName`= ?,
+                  `company`= ?,
+                  `phone`= ?,
+                  `email`= ?,
+                  `url`= ?,
+                  `address`= ?,
+                  `birthday`= ?,
+                  `date`= ?,
+                  `related`= ?,
+                  `socialProfile`= ?,
+                  `instantMessage`= ?
+              WHERE `contactID` = ?";
     $stmt = $db->prepare($query);
     $stmt->bind_param("isssissssssssi", $contactID,$firstName,$lastName,$company,$phone,$email,$url,$address,$birthday,$date,$related,$socialProfile,$instantMessage,$contactID);
     $result = $stmt->execute();
     $stmt->close();
-	
+    
     if($result)
         echo "Edited Sucessfully";
     else
         throw new UnexpectedValueException('Query result has a error');
 } catch (RuntimeException $e) {
-    echo "<table border=\"1\"><tr><td>".
-		 "RuntimeException: ".$e->getMessage()."<br />".
-		 " in ".$e->getFile()." on line ".$e->getLine().
-		 "</td></tr></table><br />";
+    $error = "RuntimeException: ".$e->getMessage()."<br />".
+             " in ".$e->getFile()." on line ".$e->getLine();
+    writeError($userID, $error);
     exit;
 } catch (InvalidArgumentException $e) {
-	echo "<table border=\"1\"><tr><td>".
-		 "InvalidArgumentException: ".$e->getMessage()."<br />".
-		 " in ".$e->getFile()." on line ".$e->getLine().
-		 "</td></tr></table><br />";
-	exit;
+    $error = "InvalidArgumentException: ".$e->getMessage()."<br />".
+             " in ".$e->getFile()." on line ".$e->getLine();
+    writeError($userID, $error);
+    exit;
 } catch (Exception $e) {
-	echo "<table border=\"1\"><tr><td>".
-		 "Exception: ".$e->getMessage()."<br />".
-		 " in ".$e->getFile()." on line ".$e->getLine().
-		 "</td></tr></table><br />";
-	exit;
+    $error = "Exception: ".$e->getMessage()."<br />".
+             " in ".$e->getFile()." on line ".$e->getLine();
+    writeError($userID, $error);
+    exit;
 }
 ?>
 </body>

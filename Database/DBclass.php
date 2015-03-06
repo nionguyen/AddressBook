@@ -8,19 +8,19 @@ class DBClass implements Adapter\IDatabase
     private $db;
     private $type;
     private $connData;
-	
+    
     function __construct($typeDB, $connData)
     {
-		$this->connData = $connData;
+        $this->connData = $connData;
         $this->switchDB($typeDB);
         $this->connect();
     }
-	
+    
     function __destruct()
     {
         $this->close();
     }
-	
+    
     function switchDB($typeDB)
     {
         $this->type = $typeDB;
@@ -43,7 +43,7 @@ class DBClass implements Adapter\IDatabase
             }
         }
     }
-	
+    
     public function connect()
     {
         switch ($this->type) {
@@ -75,44 +75,44 @@ class DBClass implements Adapter\IDatabase
             }
         }
     }
-	
+    
     public function error()
     {
         return $this->db->error();
     }
-	
+    
     public function query($query)
     {
-		if($this->db) {
-			$this->connect();
-		}
-		return $this->db->query($query);
+        if($this->db) {
+            $this->connect();
+        }
+        return $this->db->query($query);
     }
     public function affected_rows()
     {
         return $this->db->affected_rows();
     }
-	
+    
     public function close()
     {
         $this->db->close();
     }
-	
+    
     public function insert_id()
     {
         return $this->db->insert_id();
     }
-	
+    
     public function multi_query($query)
     {
         $this->db->multi_query($query);
     }
-	
+    
     public function real_escape_string($escapeStr)
     {
         return $this->db->real_escape_string($escapeStr);
     }
-	
+    
     public function prepare($query)
     {
         return $this->db->prepare($query);

@@ -2,7 +2,10 @@
 <body>
 <form>
 </form>
+<a href="http://localhost/AddressBook/User/Logout.php"> Logout</a><br><br>
+
 <?php
+
 require_once '../User/issetLogin.php';
 require_once '../Config.php';
 
@@ -12,21 +15,21 @@ echo '<input type=button onClick="location.href=\'AddContact.php\'" value="Add C
 //http://stackoverflow.com/questions/11211710/how-do-i-send-data-from-one-php-file-to-another
 try {
     $query = "SELECT * 
-	          FROM `contact_user`
-			  WHERE `userID` = '".$userID."'";
+              FROM `contact_user`
+              WHERE `userID` = '".$userID."'";
     $contactUsers = $db->query($query);
     if(!$contactUsers) {
         throw new UnexpectedValueException('Query contactUsers has a error');
     }
-	echo "<br> All Contacts <br>";
+    echo "<br> All Contacts <br>";
     $ctCount = $contactUsers->num_rows();
     for ($i = 0; $i < $ctCount; $i++) {
         $contactUser = $contactUsers->fetch_assoc();
         $contactID = $contactUser['contactID'];
         
         $query = "SELECT * 
-		          FROM `contact`
-				  WHERE `contactID` = ?";
+                  FROM `contact`
+                  WHERE `contactID` = ?";
         $stmt = $db->prepare($query);
         $stmt->bind_param("i", $contactID);
         $stmt->execute();
@@ -38,29 +41,26 @@ try {
             $name = "#noname";
         }
         $contactID = $contact['contactID'];
-		
+        
         ?><html>
         <a href="ViewContact.php?contactID=<?php echo $contactID; ?>"> <?php echo $name ?></a>
         </html><br><?php
     }
 } catch (RuntimeException $e) {
-    echo "<table border=\"1\"><tr><td>".
-		 "RuntimeException: ".$e->getMessage()."<br />".
-		 " in ".$e->getFile()." on line ".$e->getLine().
-		 "</td></tr></table><br />";
+    $error = "RuntimeException: ".$e->getMessage()."<br />".
+             " in ".$e->getFile()." on line ".$e->getLine();
+    writeError($userID, $error);
     exit;
 } catch (InvalidArgumentException $e) {
-	echo "<table border=\"1\"><tr><td>".
-		 "InvalidArgumentException: ".$e->getMessage()."<br />".
-		 " in ".$e->getFile()." on line ".$e->getLine().
-		 "</td></tr></table><br />";
-	exit;
+    $error = "InvalidArgumentException: ".$e->getMessage()."<br />".
+             " in ".$e->getFile()." on line ".$e->getLine();
+    writeError($userID, $error);
+    exit;
 } catch (Exception $e) {
-	echo "<table border=\"1\"><tr><td>".
-		 "Exception: ".$e->getMessage()."<br />".
-		 " in ".$e->getFile()." on line ".$e->getLine().
-		 "</td></tr></table><br />";
-	exit;
+    $error = "Exception: ".$e->getMessage()."<br />".
+             " in ".$e->getFile()." on line ".$e->getLine();
+    writeError($userID, $error);
+    exit;
 }
 ?>
 </body>

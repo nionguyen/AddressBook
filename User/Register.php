@@ -2,6 +2,7 @@
 <head>
 </head>
 <body>
+<a href="http://localhost/AddressBook/User/Login.php"> Login</a>
 <?php
 
 function formRegister() {
@@ -21,10 +22,24 @@ if($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST["myusername"]) && isset(
         try {
             require_once '../Config.php';
             
+            $query = "SELECT * 
+                      FROM `user`
+                      WHERE `username` = ?";
+            $stmt = $db->prepare($query);
+            $stmt->bind_param("s", $myusername);
+            $stmt->execute();
+            $result = $stmt->get_result();
+            if($result->num_rows() > 0) {
+                echo "This account already registered";
+                formRegister();
+                exit;
+            }
+            $stmt->close();
+            
             $query = "INSERT INTO user (userID,
-			                            username,
-										password) 
-			          VALUES (null, ? , sha1(?) )";
+                                        username,
+                                        password) 
+                      VALUES (null, ? , sha1(?) )";
             $stmt = $db->prepare($query);
             $stmt->bind_param("ss", $myusername, $mypassword);
             $result = $stmt->execute();
@@ -32,33 +47,31 @@ if($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST["myusername"]) && isset(
             
             if($result) {
                 echo "Register Successfully!";
+                header("Location: http://localhost/AddressBook/User/Login.php");
             } else {
                 throw new UnexpectedValueException('Query result has a error');
             }
         } catch (RuntimeException $e) {
-			echo "<table border=\"1\"><tr><td>".
-				 "RuntimeException: ".$e->getMessage()."<br />".
-				 " in ".$e->getFile()." on line ".$e->getLine().
-				 "</td></tr></table><br />" ;
-			exit;
-		} catch (InvalidArgumentException $e) {
-			echo "<table border=\"1\"><tr><td>".
-				 "InvalidArgumentException: ".$e->getMessage()."<br />".
-				 " in ".$e->getFile()." on line ".$e->getLine().
-				 "</td></tr></table><br />" ;
-			exit;
-		} catch (Exception $e) {
-			echo "<table border=\"1\"><tr><td>".
-				 "Exception: ".$e->getMessage()."<br />".
-				 " in ".$e->getFile()." on line ".$e->getLine().
-				 "</td></tr></table><br />" ;
-			exit;
-		}
+            $error = "RuntimeException: ".$e->getMessage()."<br />".
+                     " in ".$e->getFile()." on line ".$e->getLine();
+            writeError($userID, $error);
+            exit;
+        } catch (InvalidArgumentException $e) {
+            $error = "InvalidArgumentException: ".$e->getMessage()."<br />".
+                     " in ".$e->getFile()." on line ".$e->getLine();
+            writeError($userID, $error);
+            exit;
+        } catch (Exception $e) {
+            $error = "Exception: ".$e->getMessage()."<br />".
+                     " in ".$e->getFile()." on line ".$e->getLine();
+            writeError($userID, $error);
+            exit;
+        }
     } else {
-        formRegister();
         if (!empty($myusername) || !empty($mypassword)) {
             echo "Register fail";
         }
+        formRegister();
     }
 } else {
     formRegister();

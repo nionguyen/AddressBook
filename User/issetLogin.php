@@ -3,15 +3,17 @@
 </head>
 <body>
 <?php
-session_start();
-if(!isset($_SESSION["userID"])) {
-    echo "Plz login first";
-    echo '
-        <input type=button onClick="location.href=\'../User/Login.php\'" value="Add Contact">
-    ';
+require_once $_SERVER['DOCUMENT_ROOT'].'/AddressBook/'.'AutoLoad.php';
+
+try {
+    $cookie = new Cookie();
+    $cookie->validate();
+    $userID = $cookie->userid;
+} catch (AuthException $e) {
+    header("Location: http://localhost/AddressBook/user/login.php?originating_uri=".$_SERVER['REQUEST_URI']);
     exit;
 }
-$userID = (int)$_SESSION["userID"];
+
 ?>
 <head>
 </body>

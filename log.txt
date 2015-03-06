@@ -1,0 +1,8 @@
+Userid : 44
+RuntimeException: Mysql prepare fail : 1146: Table 'addressbook.contacts' doesn't exist
+<br /> in E:\WT-NMP\WWW\AddressBook\Database\Adapter\MySqlDB.php on line 45
+=====================
+Userid : 44
+RuntimeException: Mysql prepare fail : 1146: Table 'addressbook.contacts' doesn't exist
+<br /> in E:\WT-NMP\WWW\AddressBook\Database\Adapter\MySqlDB.php on line 45
+=====================
