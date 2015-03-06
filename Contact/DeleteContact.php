@@ -29,9 +29,24 @@ try {
         echo "Deleted Sucessfully";
     else
         throw new UnexpectedValueException('Query result has a error');
-} catch (Exception $e) {
-    echo "Error: ".$e->getMessage()." in ".$e->getFile()." on line ".$e->getLine()."<br />" ;
+} catch (RuntimeException $e) {
+    echo "<table border=\"1\"><tr><td>".
+		 "RuntimeException: ".$e->getMessage()."<br />".
+		 " in ".$e->getFile()." on line ".$e->getLine().
+		 "</td></tr></table><br />";
     exit;
+} catch (InvalidArgumentException $e) {
+	echo "<table border=\"1\"><tr><td>".
+		 "InvalidArgumentException: ".$e->getMessage()."<br />".
+		 " in ".$e->getFile()." on line ".$e->getLine().
+		 "</td></tr></table><br />";
+	exit;
+} catch (Exception $e) {
+	echo "<table border=\"1\"><tr><td>".
+		 "Exception: ".$e->getMessage()."<br />".
+		 " in ".$e->getFile()." on line ".$e->getLine().
+		 "</td></tr></table><br />";
+	exit;
 }
 ?>
 </body>

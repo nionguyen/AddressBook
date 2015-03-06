@@ -15,12 +15,22 @@ class MysqlStmt implements IStmt
 	
 	public function bind_param($types,...$numbers)
 	{
-		return $this->stmt->bind_param($types,...$numbers);
+		$rc = $this->stmt->bind_param($types,...$numbers);
+		
+		if ( !$rc ) {
+			throw new \RuntimeException("Mysql bind_param fail : " . mysqli_errno($this->db) . ": " . mysqli_error($this->db) . "\n");
+		}
+		return $rc;
 	}
 	
 	public function execute()
 	{
-		return $this->stmt->execute();
+		$rc = $this->stmt->execute();
+		
+		if ( !$rc ) {
+			throw new \RuntimeException("Mysql execute fail : " . mysqli_errno($this->db) . ": " . mysqli_error($this->db) . "\n");
+		}
+		return $rc;
 	}
 	
     public function close()

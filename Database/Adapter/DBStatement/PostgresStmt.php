@@ -25,7 +25,9 @@ class PostgresStmt implements IStmt
 	
 	public function execute()
 	{
-		$this->result = pg_execute($this->db, "my_query", $this->arr);
+		$this->result = @pg_execute($this->db, "my_query", $this->arr);
+		if(!$this->result)
+			throw new \RuntimeException("Postgres execute fail : " . pg_last_error($this->db) . "\n");
 		return new PostgresRsl($this->db, $this->query, $this->result);
 	}
 	

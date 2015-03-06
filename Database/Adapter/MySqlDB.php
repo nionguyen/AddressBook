@@ -9,31 +9,40 @@ class MySqlDB implements IDatabase
     public function connect($dbhost='', $user='', $pass='', $dbname='')
     {
         if(strcmp($dbhost,'') == 0) {
-            throw new InvalidArgumentException('dbhost is empty');
+            throw new \InvalidArgumentException('dbhost is empty');
         }
         if(strcmp($dbname,'') == 0) {
-            throw new InvalidArgumentException('dbname is empty');
+            throw new \InvalidArgumentException('dbname is empty');
         }
         if(strcmp($user,'') == 0) {
-            throw new InvalidArgumentException('user is empty');
+            throw new \InvalidArgumentException('user is empty');
         }
-        $this->db = new \mysqli($dbhost, $user, $pass, $dbname);
+		
+		$this->db = @new \mysqli($dbhost, $user, $pass, $dbname);
+				
+		if (mysqli_connect_error()) {
+			throw new \RuntimeException("Mysql Connect failed: ".mysqli_connect_error());
+		}
     }
     
     public function error()
     {
-        return $this->db->error;//mysqli_connect_errno();
+        return mysqli_error($this->db);
     }
     
     public function query($query)
     {
 		$result = $this->db->query($query);
+		if(!$result)
+			throw new \RuntimeException("Mysql query fail : " . mysqli_errno($this->db) . ": " . mysqli_error($this->db) . "\n");
 		return new DBStatement\MysqlRsl($this->db, $query, $result);
     }
 	
 	public function prepare($query)
 	{
 		$stmt = $this->db->prepare($query);
+		if(!$stmt)
+			throw new \RuntimeException("Mysql prepare fail : " . mysqli_errno($this->db) . ": " . mysqli_error($this->db) . "\n");
 		return new DBStatement\MysqlStmt($this->db, $query, $stmt);
 	}
 
@@ -54,6 +63,8 @@ class MySqlDB implements IDatabase
     
     public function multi_query($query)
     {
+		if(!$result)
+			throw new \RuntimeException("Mysql multi query fail : " . mysqli_errno($this->db) . ": " . mysqli_error($this->db) . "\n");
         $this->db->multi_query($query);
     }
 	

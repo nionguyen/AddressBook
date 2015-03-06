@@ -13,4 +13,10 @@ interface IDatabase
     public function real_escape_string($escapeStr);
     public function prepare($query);
 }
+
+class DatabaseException extends \Exception {}
+class MysqlException extends DatabaseException {}
+class PostgresException extends DatabaseException {}
+class SqliteException extends DatabaseException {}
+
 ?>

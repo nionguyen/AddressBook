@@ -55,10 +55,25 @@ if($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST["myusername"]) && isset(
                     echo 'Login fail';
                 }
             }
-        } catch (Exception $e) {
-            echo "Error: ".$e->getMessage()." in ".$e->getFile()." on line ".$e->getLine()."<br />" ;
-            exit;
-        }
+        } catch (RuntimeException $e) {
+			echo "<table border=\"1\"><tr><td>".
+				 "RuntimeException: ".$e->getMessage()."<br />".
+				 " in ".$e->getFile()." on line ".$e->getLine().
+				 "</td></tr></table><br />";
+			exit;
+		} catch (InvalidArgumentException $e) {
+			echo "<table border=\"1\"><tr><td>".
+				 "InvalidArgumentException: ".$e->getMessage()."<br />".
+				 " in ".$e->getFile()." on line ".$e->getLine().
+				 "</td></tr></table><br />";
+			exit;
+		} catch (Exception $e) {
+			echo "<table border=\"1\"><tr><td>".
+				 "Exception: ".$e->getMessage()."<br />".
+				 " in ".$e->getFile()." on line ".$e->getLine().
+				 "</td></tr></table><br />";
+			exit;
+		}
     } else {
         formLogin();
         if (!empty($myusername) || !empty($mypassword)) {

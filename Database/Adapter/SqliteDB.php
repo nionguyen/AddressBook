@@ -9,7 +9,7 @@ class SqliteDB implements IDatabase
     public function connect($location='')
     {
         if(strcmp($location,'') == 0) {
-            throw new InvalidArgumentException('Location is empty');
+            throw new \InvalidArgumentException('Location is empty');
         }
         $this->db = new SQLite3($location); 
     }
@@ -38,17 +38,17 @@ class SqliteDB implements IDatabase
 	
     public function insert_id()
     {
-        throw new Exception('This Database type is not supported this function');
+        throw new \Exception('This Database type is not supported this function');
     }
 	
     public function multi_query($query)
     {
-        throw new Exception('This Database type is not supported this function');
+        throw new \Exception('This Database type is not supported this function');
     }
 	
     public function real_escape_string($escapeStr)
     {
-        throw new Exception('This Database type is not supported this function');
+        throw new \Exception('This Database type is not supported this function');
     }
 }
 
