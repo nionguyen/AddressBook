@@ -40,8 +40,6 @@ try {
     
     if($result)
         echo "Edited Sucessfully";
-    else
-        throw new UnexpectedValueException('Query result has a error');
 } catch (RuntimeException $e) {
     $error = "RuntimeException: ".$e->getMessage()."<br />".
              " in ".$e->getFile()." on line ".$e->getLine();

@@ -20,9 +20,6 @@ class PostgresRsl implements IResult
     
     public function fetch_row()
     {
-        if(!$this->result) {
-            throw new Exception("Query not executed");
-        }
         return pg_fetch_row($this->result);
     }
     

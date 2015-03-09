@@ -30,22 +30,22 @@ class PostgresDB implements IDatabase
     
     public function error()
     {
-        $res1 = pg_get_result($this->db);
-        return pg_result_error($res1);
+        $rs = pg_get_result($this->db);
+        return pg_result_error($rs);
     }
     
     public function query($query)
     {       
         $result = @pg_query($this->db, $query);
         if(!$result)
-            throw new \RuntimeException("Postgres query fail : " . pg_last_error($this->db) . "\n");
+            throw new \RuntimeException("Postgres query fail : " . pg_last_error($this->db) . "<br>" . "Query : " . $this->query . "\n");
         return new DBStatement\PostgresRsl($this->db, $query, $result);
     }
     public function prepare($query)
     {
         $result = @pg_prepare($this->db, "my_query", $query);
         if(!$result)
-            throw new \RuntimeException("Postgres prepare fail : " . pg_last_error($this->db) . "\n");
+            throw new \RuntimeException("Postgres prepare fail : " . pg_last_error($this->db) . "<br>" . "Query : " . $this->query . "\n");
         return new DBStatement\PostgresStmt($this->db, $query, $result);
     }
 

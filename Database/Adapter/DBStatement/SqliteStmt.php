@@ -13,7 +13,7 @@ class SqliteStmt implements IStmt
         $this->stmt = $stmt;
     }
     
-    public function bind_param($types,...$numbers)
+    public function bind_param()
     {
     }
     

@@ -48,8 +48,6 @@ if($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST["myusername"]) && isset(
             if($result) {
                 echo "Register Successfully!";
                 header("Location: http://localhost/AddressBook/User/Login.php");
-            } else {
-                throw new UnexpectedValueException('Query result has a error');
             }
         } catch (RuntimeException $e) {
             $error = "RuntimeException: ".$e->getMessage()."<br />".

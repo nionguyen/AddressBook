@@ -18,15 +18,12 @@ try {
               FROM `contact_user`
               WHERE `userID` = '".$userID."'";
     $contactUsers = $db->query($query);
-    if(!$contactUsers) {
-        throw new UnexpectedValueException('Query contactUsers has a error');
-    }
+    
     echo "<br> All Contacts <br>";
     $ctCount = $contactUsers->num_rows();
     for ($i = 0; $i < $ctCount; $i++) {
         $contactUser = $contactUsers->fetch_assoc();
         $contactID = $contactUser['contactID'];
-        
         $query = "SELECT * 
                   FROM `contact`
                   WHERE `contactID` = ?";

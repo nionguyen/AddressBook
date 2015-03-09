@@ -33,28 +33,21 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     if(!$havingErr) {
         try {
             
-            $query = "INSERT INTO contact
+            $query = "INSERT INTO contact s
                       VALUES (null,?,?,?,?,?,?,?,?,?,?,?,?)";
             $stmt = $db->prepare($query);
             $stmt->bind_param("sssissssssss", $firstName, $lastName,$company,$phone,$email,$url,$address,$birthday,$date,$related,$socialProfile,$instantMessage);
             $result = $stmt->execute();
             $stmt->close();
             if($result) {
-                echo "Contact added successfully<br>";
                 $contactID = $db->insert_id();
-                
                 $query = "INSERT INTO contact_user (contactID,userID)
                           VALUES (?,?)";
                 $stmt = $db->prepare($query);
                 $stmt->bind_param("ii", $contactID, $userID);
                 $result = $stmt->execute();
                 $stmt->close();
-                
-                if(!$result) {
-                    throw new UnexpectedValueException('Query result has a error');
-                }
-            } else {
-                throw new UnexpectedValueException('Query result has a error');
+                echo "Contact added successfully<br>";
             }
         } catch (RuntimeException $e) {
             $error = "RuntimeException: ".$e->getMessage()."<br />".

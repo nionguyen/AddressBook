@@ -35,11 +35,6 @@ if($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST["myusername"]) && isset(
             $result = $stmt->get_result();
             $stmt->close();
             
-            if(!$result) {
-                throw new UnexpectedValueException('Query result has a error');
-                exit;
-            }
-            
             $numResults = $result->num_rows();
             if ($numResults > 0) {
                 echo 'Login Successfully!';

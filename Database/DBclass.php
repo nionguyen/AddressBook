@@ -9,16 +9,30 @@ class DBClass implements Adapter\IDatabase
     private $type;
     private $connData;
     
-    function __construct($typeDB, $connData)
+    function __construct()
     {
-        $this->connData = $connData;
-        $this->switchDB($typeDB);
-        $this->connect();
     }
-    
+
     function __destruct()
     {
         $this->close();
+    }
+
+    public function setDB($db)
+    {
+        $this->db = new Adapter\MySqlDB();
+        $this->db->setDB($db);
+    }
+
+    public function setTypeDB($typeDB)
+    {
+        $this->switchDB($typeDB);
+    }
+    public function setConnData($connData)
+    {
+        if(!$connData)
+            throw new \InvalidArgumentException('ConnData is null');
+        $this->connData = $connData;
     }
     
     function switchDB($typeDB)
@@ -83,9 +97,6 @@ class DBClass implements Adapter\IDatabase
     
     public function query($query)
     {
-        if($this->db) {
-            $this->connect();
-        }
         return $this->db->query($query);
     }
     public function affected_rows()
@@ -105,7 +116,7 @@ class DBClass implements Adapter\IDatabase
     
     public function multi_query($query)
     {
-        $this->db->multi_query($query);
+        return $this->db->multi_query($query);
     }
     
     public function real_escape_string($escapeStr)

@@ -13,7 +13,10 @@ $dbname    = 'postgres';
 $dbtype    = 1;
 
 try {
-    $db = new Database\DBClass($dbtype,new Database\Adapter\Conn\MySqlConn($dbhost, $user, $pass, $dbname));
+	$db = new Database\DBClass();
+    $db->setTypeDB($dbtype);
+    $db->setConnData(new Database\Adapter\Conn\PostgresConn($dbhost, $user, $pass, $dbname));
+    $db->connect();
 } catch (RuntimeException $e) {
     echo "<table border=\"1\"><tr><td>".
 		 "RuntimeException: ".$e->getMessage()."<br />".

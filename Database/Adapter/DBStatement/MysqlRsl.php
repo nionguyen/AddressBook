@@ -20,9 +20,6 @@ class MysqlRsl implements IResult
     
     public function fetch_row()
     {
-        if(!$this->result) {
-            throw new Exception("Query not executed");
-        }
         return $this->result->fetch_row();
     }
     

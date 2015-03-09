@@ -79,7 +79,6 @@ class Cookie
     }
     private function _encrypt($plaintext)
     {
-        //return $plaintext;
         $iv = mcrypt_create_iv(mcrypt_enc_get_iv_size ($this->td), MCRYPT_RAND);
         mcrypt_generic_init ($this->td, self::$key, $iv);
         $crypttext = mcrypt_generic($this->td, $plaintext);

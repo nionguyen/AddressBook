@@ -5,7 +5,12 @@ namespace Database\Adapter;
 class MySqlDB implements IDatabase
 {
     private $db;
-    
+
+    function setDB($db)
+    {
+        $this->db = $db;
+    }
+
     public function connect($dbhost='', $user='', $pass='', $dbname='')
     {
         if(strcmp($dbhost,'') == 0) {
@@ -18,7 +23,7 @@ class MySqlDB implements IDatabase
             throw new \InvalidArgumentException('user is empty');
         }
         
-        $this->db = @new \mysqli($dbhost, $user, $pass, $dbname);
+        $this->db = new \Database\Adapter\Connection\MysqlConnection($dbhost, $user, $pass, $dbname);
                 
         if (mysqli_connect_error()) {
             throw new \RuntimeException("Mysql Connect failed: ".mysqli_connect_error());
@@ -27,14 +32,14 @@ class MySqlDB implements IDatabase
     
     public function error()
     {
-        return mysqli_error($this->db);
+        return $this->db->getLastError();
     }
     
     public function query($query)
     {
         $result = $this->db->query($query);
         if(!$result)
-            throw new \RuntimeException("Mysql query fail : " . mysqli_errno($this->db) . ": " . mysqli_error($this->db) . "\n");
+            throw new \RuntimeException("Mysql query fail : " . $this->db->getLastErrno() . ": " . $this->db->getLastError() . "<br>" . "Query : " . $query . "\n");
         return new DBStatement\MysqlRsl($this->db, $query, $result);
     }
     
@@ -42,7 +47,7 @@ class MySqlDB implements IDatabase
     {
         $stmt = $this->db->prepare($query);
         if(!$stmt)
-            throw new \RuntimeException("Mysql prepare fail : " . mysqli_errno($this->db) . ": " . mysqli_error($this->db) . "\n");
+            throw new \RuntimeException("Mysql prepare fail : " . $this->db->getLastErrno() . ": " . $this->db->getLastError() . "<br>" . "Query : " . $query . "\n");
         return new DBStatement\MysqlStmt($this->db, $query, $stmt);
     }
 
@@ -63,9 +68,10 @@ class MySqlDB implements IDatabase
     
     public function multi_query($query)
     {
+        $result = $this->db->multi_query($query);
         if(!$result)
-            throw new \RuntimeException("Mysql multi query fail : " . mysqli_errno($this->db) . ": " . mysqli_error($this->db) . "\n");
-        $this->db->multi_query($query);
+            throw new \RuntimeException("Mysql multi query fail : " . $this->db->getLastErrno() . ": " . $this->db->getLastError() . "<br>" . "Query : " . $query . "\n");
+        return new DBStatement\MysqlRsl($this->db, $query, $result);
     }
     
     public function real_escape_string($escapeStr)

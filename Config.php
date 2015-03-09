@@ -31,7 +31,10 @@ $dbname    = $iniArray["dbname"];
 $dbtype    = $iniArray["dbtype"];
 
 try {
-    $db = new Database\DBClass($dbtype,new Database\Adapter\Conn\MySqlConn($dbhost, $user, $pass, $dbname));
+    $db = new Database\DBClass();
+    $db->setTypeDB($dbtype);
+    $db->setConnData(new Database\Adapter\Conn\MySqlConn($dbhost, $user, $pass, $dbname));
+    $db->connect();
 } catch (RuntimeException $e) {
     $error = "RuntimeException: ".$e->getMessage()."<br />".
              " in ".$e->getFile()." on line ".$e->getLine();

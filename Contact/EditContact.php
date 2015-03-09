@@ -26,9 +26,6 @@ try {
     $result = $stmt->get_result();
     $stmt->close();
     
-    if(!$result) {
-        throw new UnexpectedValueException('Query result has a error');
-    }
     $row = $result->fetch_assoc();
 } catch (RuntimeException $e) {
     $error = "RuntimeException: ".$e->getMessage()."<br />".

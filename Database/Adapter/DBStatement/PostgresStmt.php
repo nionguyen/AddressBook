@@ -14,12 +14,12 @@ class PostgresStmt implements IStmt
         $this->stmt = $stmt;
     }
     
-    public function bind_param($types,...$numbers)
+    public function bind_param()
     {
-        $i = 0;
-        foreach ($numbers as $n) {
-            $this->arr[$i] = $n;
-            $i++;
+        $arg_list = func_get_args();
+        for($i = 1; $i < func_num_args(); $i++)
+        {
+            $this->arr[$i - 1] = $arg_list[$i];
         }
     }
     
@@ -27,7 +27,7 @@ class PostgresStmt implements IStmt
     {
         $this->result = @pg_execute($this->db, "my_query", $this->arr);
         if(!$this->result)
-            throw new \RuntimeException("Postgres execute fail : " . pg_last_error($this->db) . "\n");
+            throw new \RuntimeException("Postgres execute fail : " . pg_last_error($this->db) . "<br>" . "Query : " . $this->query . "\n");
         return new PostgresRsl($this->db, $this->query, $this->result);
     }
     

@@ -12,13 +12,17 @@ class MysqlStmt implements IStmt
         $this->db = $db;
         $this->stmt = $stmt;
     }
-    
-    public function bind_param($types,...$numbers)
+
+    public function bind_param()
     {
-        $rc = $this->stmt->bind_param($types,...$numbers);
-        
+        $refs = array();
+        $arg_list = func_get_args();
+        foreach($arg_list as $key => $value)
+            $refs[$key] = &$arg_list[$key];
+
+        $rc = call_user_func_array(array($this->stmt, 'bind_param'), $refs);
         if ( !$rc ) {
-            throw new \RuntimeException("Mysql bind_param fail : " . mysqli_errno($this->db) . ": " . mysqli_error($this->db) . "\n");
+            throw new \RuntimeException("Mysql bind_param fail : " . mysqli_errno($this->db) . ": " . mysqli_error($this->db) . "<br>" . "Query : " . $this->query . "\n");
         }
         return $rc;
     }
@@ -28,7 +32,7 @@ class MysqlStmt implements IStmt
         $rc = $this->stmt->execute();
         
         if ( !$rc ) {
-            throw new \RuntimeException("Mysql execute fail : " . mysqli_errno($this->db) . ": " . mysqli_error($this->db) . "\n");
+            throw new \RuntimeException("Mysql execute fail : " . mysqli_errno($this->db) . ": " . mysqli_error($this->db) . "<br>" . "Query : " . $this->query . "\n");
         }
         return $rc;
     }
@@ -40,7 +44,11 @@ class MysqlStmt implements IStmt
     
     public function get_result()
     {
-        return new MysqlRsl($this->db, $this->query, $this->stmt->get_result());
+        $rc = $this->stmt->get_result();
+        if ( !$rc ) {
+            throw new \RuntimeException("Mysql get_result fail : " . mysqli_errno($this->db) . ": " . mysqli_error($this->db) . "<br>" . "Query : " . $this->query . "\n");
+        }
+        return new MysqlRsl($this->db, $this->query, $rc);
     }
 }
 ?>
