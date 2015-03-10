@@ -33,7 +33,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     if(!$havingErr) {
         try {
             
-            $query = "INSERT INTO contact s
+            $query = "INSERT INTO contact
                       VALUES (null,?,?,?,?,?,?,?,?,?,?,?,?)";
             $stmt = $db->prepare($query);
             $stmt->bind_param("sssissssssss", $firstName, $lastName,$company,$phone,$email,$url,$address,$birthday,$date,$related,$socialProfile,$instantMessage);

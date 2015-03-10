@@ -3,8 +3,8 @@ namespace Database\Adapter;
 
 interface IDatabase 
 {
-    public function connect(); 
-    public function error();
+    public function getLastError();
+    public function getLastErrno();
     public function query($query);
     public function affected_rows();
     public function close();
@@ -13,10 +13,4 @@ interface IDatabase
     public function real_escape_string($escapeStr);
     public function prepare($query);
 }
-
-class DatabaseException extends \Exception {}
-class MysqlException extends DatabaseException {}
-class PostgresException extends DatabaseException {}
-class SqliteException extends DatabaseException {}
-
 ?>

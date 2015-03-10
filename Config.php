@@ -29,12 +29,45 @@ $user      = $iniArray["user"];
 $pass      = $iniArray["pass"];
 $dbname    = $iniArray["dbname"];
 $dbtype    = $iniArray["dbtype"];
+//$location  = $iniArray["location"];
 
 try {
-    $db = new Database\DBClass();
-    $db->setTypeDB($dbtype);
-    $db->setConnData(new Database\Adapter\Conn\MySqlConn($dbhost, $user, $pass, $dbname));
-    $db->connect();
+
+    switch ($dbtype) {
+        case Database\Adapter\TypeDB::MYSQL: {
+            $connData = new Database\Adapter\Conn\MySqlConn($dbhost, $user, $pass, $dbname);
+            $connData->validate();
+            $mysqli = new mysqli($connData->dbhost, $connData->user, $connData->pass, $connData->dbname);
+            if (mysqli_connect_error()) {
+                throw new \RuntimeException("Mysql Connect failed: ".mysqli_connect_error());
+            }
+            $dbd = new Database\Adapter\MySqlDB($mysqli);
+            break;
+        }
+        case Database\Adapter\TypeDB::POSTGRES: {
+            $connData = new Database\Adapter\Conn\PostgresConn($dbhost, $user, $pass, $dbname);
+            $connData->validate();
+            if(!$postgresDB = @pg_connect($connData->connString))
+            {
+                throw new \RuntimeException("Postgres Connect failed ");
+            }
+            $dbd = new Database\Adapter\PostgresDB($postgresDB);
+            break;
+        }
+        case Database\Adapter\TypeDB::SQLITE: {
+            //$connData = new Database\Adapter\Conn\SqliteConn($location);
+            //$connData->validate();
+            //$sqliteDB = new SQLite3($location);
+            //$dbd = new Database\Adapter\SqliteDB($sqliteDB);
+            break;
+        }
+        default: {
+            throw new InvalidArgumentException('$dbtype is not appropriate');
+            break;
+        }
+    }
+
+    $db = new Database\DBClass($dbd, $dbtype);
 } catch (RuntimeException $e) {
     $error = "RuntimeException: ".$e->getMessage()."<br />".
              " in ".$e->getFile()." on line ".$e->getLine();

@@ -7,10 +7,11 @@ class DBClass implements Adapter\IDatabase
 {
     private $db;
     private $type;
-    private $connData;
-    
-    function __construct()
+
+    function __construct($db, $typeDB)
     {
+        $this->db = $db;
+        $this->type = $typeDB;
     }
 
     function __destruct()
@@ -18,81 +19,14 @@ class DBClass implements Adapter\IDatabase
         $this->close();
     }
 
-    public function setDB($db)
+    public function getLastError()
     {
-        $this->db = new Adapter\MySqlDB();
-        $this->db->setDB($db);
+        return $this->db->getLastError();
     }
 
-    public function setTypeDB($typeDB)
+    public function getLastErrno()
     {
-        $this->switchDB($typeDB);
-    }
-    public function setConnData($connData)
-    {
-        if(!$connData)
-            throw new \InvalidArgumentException('ConnData is null');
-        $this->connData = $connData;
-    }
-    
-    function switchDB($typeDB)
-    {
-        $this->type = $typeDB;
-        switch ($this->type) {
-            case Adapter\TypeDB::MYSQL: {
-                $this->db = new Adapter\MySqlDB();
-                break;
-            }
-            case Adapter\TypeDB::POSTGRES: {
-                $this->db = new Adapter\PostgresDB();
-                break;
-            }
-            case Adapter\TypeDB::SQLITE: {
-                $this->db = new Adapter\SqliteDB();
-                break;
-            }
-            default: {
-                throw new InvalidArgumentException('TypeDB is not appropriate');
-                break;
-            }
-        }
-    }
-    
-    public function connect()
-    {
-        switch ($this->type) {
-            case Adapter\TypeDB::MYSQL: {
-                $this->db->connect(
-                                $this->connData->dbhost,
-                                $this->connData->user,
-                                $this->connData->pass,
-                                $this->connData->dbname
-                );
-                break;
-            }
-            case Adapter\TypeDB::POSTGRES: {
-                $this->db->connect(
-                                $this->connData->dbhost,
-                                $this->connData->user,
-                                $this->connData->pass,
-                                $this->connData->dbname
-                );
-                break;
-            }
-            case Adapter\TypeDB::SQLITE: {
-                $this->db->connect($this->connData->location);
-                break;
-            }
-            default: {
-                throw new InvalidArgumentException('TypeDB is not appropriate');
-                break;
-            }
-        }
-    }
-    
-    public function error()
-    {
-        return $this->db->error();
+        return $this->db->getLastErrno();
     }
     
     public function query($query)

@@ -6,50 +6,44 @@ namespace Database\Adapter;
 class PostgresDB implements IDatabase
 {
     private $db;
-    
-    public function connect($dbhost='', $user='', $pass='', $dbname='')
+
+    function __construct($db)
     {
-        if(strcmp($dbhost,'') == 0) {
-            throw new \InvalidArgumentException('dbhost is empty');
-        }
-        if(strcmp($dbname,'') == 0) {
-            throw new \InvalidArgumentException('dbname is empty');
-        }
-        if(strcmp($user,'') == 0) {
-            throw new \InvalidArgumentException('user is empty');
-        }
-        
-        $connString = 'host='.$dbhost.' dbname='.$dbname.' user='.$user.' password='.$pass;
-        
-        if(!$this->db = @pg_connect($connString))
-        {
-            throw new \RuntimeException("Postgres Connect failed ");
-        }
-        
+        $this->db = $db;
     }
-    
+
     public function error()
     {
         $rs = pg_get_result($this->db);
         return pg_result_error($rs);
     }
-    
+
+    public function getLastError()
+    {
+        return pg_last_error($this->db);
+    }
+
+    public function getLastErrno()
+    {
+        return pg_last_error($this->db);
+    }
+
     public function query($query)
     {       
         $result = @pg_query($this->db, $query);
         if(!$result)
-            throw new \RuntimeException("Postgres query fail : " . pg_last_error($this->db) . "<br>" . "Query : " . $this->query . "\n");
+            throw new \RuntimeException("Postgres query fail : " . $this->getLastError() . "<br>" . "Query : " . $this->query . "\n");
         return new DBStatement\PostgresRsl($this->db, $query, $result);
     }
     public function prepare($query)
     {
         $result = @pg_prepare($this->db, "my_query", $query);
         if(!$result)
-            throw new \RuntimeException("Postgres prepare fail : " . pg_last_error($this->db) . "<br>" . "Query : " . $this->query . "\n");
+            throw new \RuntimeException("Postgres prepare fail : " . $this->getLastError() . "<br>" . "Query : " . $this->query . "\n");
         return new DBStatement\PostgresStmt($this->db, $query, $result);
     }
 
-    public function affected_rows()
+    public function affected_rows($result='')
     {
         return pg_affected_rows($result);
     }

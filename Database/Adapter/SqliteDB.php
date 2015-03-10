@@ -5,27 +5,31 @@ namespace Database\Adapter;
 class SqliteDB implements IDatabase
 {
     private $db;
-    
-    public function connect($location='')
+
+    function __construct($db)
     {
-        if(strcmp($location,'') == 0) {
-            throw new \InvalidArgumentException('Location is empty');
-        }
-        $this->db = new SQLite3($location); 
+        $this->db = $db;
     }
-    
-    public function error()
+
+    public function getLastError()
     {
         return $this->db->lastErrorMsg();
     }
-    
+
+    public function getLastErrno()
+    {
+        return $this->db->lastErrorCode();
+    }
+
     public function query($query)
     {
         return $this->db->query($query);
     }
+
     public function prepare($query)
     {
     }
+
     public function affected_rows()
     {
         return $this->db->affected_rows;

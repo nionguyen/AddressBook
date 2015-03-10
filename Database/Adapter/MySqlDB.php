@@ -5,41 +5,26 @@ namespace Database\Adapter;
 class MySqlDB implements IDatabase
 {
     private $db;
-
-    function setDB($db)
+    function __construct($db)
     {
         $this->db = $db;
     }
 
-    public function connect($dbhost='', $user='', $pass='', $dbname='')
+    public function getLastError()
     {
-        if(strcmp($dbhost,'') == 0) {
-            throw new \InvalidArgumentException('dbhost is empty');
-        }
-        if(strcmp($dbname,'') == 0) {
-            throw new \InvalidArgumentException('dbname is empty');
-        }
-        if(strcmp($user,'') == 0) {
-            throw new \InvalidArgumentException('user is empty');
-        }
-        
-        $this->db = new \Database\Adapter\Connection\MysqlConnection($dbhost, $user, $pass, $dbname);
-                
-        if (mysqli_connect_error()) {
-            throw new \RuntimeException("Mysql Connect failed: ".mysqli_connect_error());
-        }
+        return $this->db->error;
     }
-    
-    public function error()
+
+    public function getLastErrno()
     {
-        return $this->db->getLastError();
+        return $this->db->errno;
     }
     
     public function query($query)
     {
         $result = $this->db->query($query);
         if(!$result)
-            throw new \RuntimeException("Mysql query fail : " . $this->db->getLastErrno() . ": " . $this->db->getLastError() . "<br>" . "Query : " . $query . "\n");
+            throw new \RuntimeException("Mysql query fail : " . $this->getLastErrno() . ": " . $this->getLastError() . "<br>" . "Query : " . $query . "\n");
         return new DBStatement\MysqlRsl($this->db, $query, $result);
     }
     
@@ -47,7 +32,7 @@ class MySqlDB implements IDatabase
     {
         $stmt = $this->db->prepare($query);
         if(!$stmt)
-            throw new \RuntimeException("Mysql prepare fail : " . $this->db->getLastErrno() . ": " . $this->db->getLastError() . "<br>" . "Query : " . $query . "\n");
+            throw new \RuntimeException("Mysql prepare fail : " . $this->getLastErrno() . ": " . $this->getLastError() . "<br>" . "Query : " . $query . "\n");
         return new DBStatement\MysqlStmt($this->db, $query, $stmt);
     }
 
@@ -70,7 +55,7 @@ class MySqlDB implements IDatabase
     {
         $result = $this->db->multi_query($query);
         if(!$result)
-            throw new \RuntimeException("Mysql multi query fail : " . $this->db->getLastErrno() . ": " . $this->db->getLastError() . "<br>" . "Query : " . $query . "\n");
+            throw new \RuntimeException("Mysql multi query fail : " . $this->getLastErrno() . ": " . $this->getLastError() . "<br>" . "Query : " . $query . "\n");
         return new DBStatement\MysqlRsl($this->db, $query, $result);
     }
     

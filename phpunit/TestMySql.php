@@ -3,72 +3,6 @@
 require_once $_SERVER['DOCUMENT_ROOT'].'/AddressBook/'.'AutoLoad.php';
 require_once "vendor/autoload.php";
 
-class BadMockDB
-{
-    public function query($query)
-    {
-        return false;
-    }
-
-    public function prepare($query)
-    {
-        return false;
-    }
-
-    public function multi_query($query)
-    {
-        return false;
-    }
-
-    public function close()
-    {
-
-    }
-
-    public function getLastError()
-    {
-       return "Last Error";
-    }
-
-    public function getLastErrno()
-    {
-       return "Last Errno";
-    }
-}
-
-class GoodMockDB
-{
-    public function query($query)
-    {
-        return true;
-    }
-
-    public function prepare($query)
-    {
-        return true;
-    }
-
-    public function multi_query($query)
-    {
-        return true;
-    }
-
-    public function close()
-    {
-
-    }
-
-    public function getLastError()
-    {
-       return "Last Error";
-    }
-
-    public function getLastErrno()
-    {
-       return "Last Errno";
-    }
-}
-
 class DBTestCase extends PHPUnit_Framework_TestCase
 {
 	public $db;
@@ -76,6 +10,19 @@ class DBTestCase extends PHPUnit_Framework_TestCase
 	{
 		parent::__construct($name);
 	}
+}
+
+class MysqlDB_Proxy extends Database\Adapter\MySqlDB
+{
+    public function getLastError()
+    {
+        return "Last Error";
+    }
+
+    public function getLastErrno()
+    {
+        return "Last Errno";
+    }
 }
 
 class DBBadTestCase extends DBTestCase
@@ -87,11 +34,21 @@ class DBBadTestCase extends DBTestCase
 
     function setUp()
     {
-        $this->db = new Database\DBClass();
-        $this->db->setDB(new BadMockDB());
+        $mockDB = $this->getMockBuilder('mysqli')->getMock();
+        $mockDB->method('query')
+            ->willReturn(false);
+
+        $mockDB->method('prepare')
+            ->willReturn(false);
+
+        $mockDB->method('multi_query')
+            ->willReturn(false);
+
+        $db = new MysqlDB_Proxy($mockDB);
+        $this->db = new Database\DBClass($db,null);
     }
 
-    
+
     function testBadQuery()
     {
         $this->setExpectedException('RuntimeException');
@@ -109,7 +66,10 @@ class DBBadTestCase extends DBTestCase
         $this->setExpectedException('RuntimeException');
         $this->db->multi_query("null");
     }
+
 }
+
+
 
 class DBGoodTestCase extends DBTestCase
 {
@@ -120,11 +80,22 @@ class DBGoodTestCase extends DBTestCase
 
     function setUp()
     {
-        $this->db = new Database\DBClass();
-        $this->db->setDB(new GoodMockDB());
+
+        $mockDB = $this->getMockBuilder('mysqli')->getMock();
+        $mockDB->method('query')
+               ->willReturn(true);
+
+        $mockDB->method('prepare')
+               ->willReturn(true);
+
+        $mockDB->method('multi_query')
+               ->willReturn(true);
+
+        $db = new MysqlDB_Proxy($mockDB);
+        $this->db = new Database\DBClass($db,null);
     }
 
-    
+
     function testGoodQuery()
     {
         $this->assertNotNull($this->db->query("null"));

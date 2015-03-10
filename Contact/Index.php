@@ -24,7 +24,7 @@ try {
     for ($i = 0; $i < $ctCount; $i++) {
         $contactUser = $contactUsers->fetch_assoc();
         $contactID = $contactUser['contactID'];
-        $query = "SELECT * 
+        $query = "SELECT *
                   FROM `contact`
                   WHERE `contactID` = ?";
         $stmt = $db->prepare($query);
