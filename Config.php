@@ -35,29 +35,34 @@ try {
 
     switch ($dbtype) {
         case Database\Adapter\TypeDB::MYSQL: {
-            $connData = new Database\Adapter\Conn\MySqlConn($dbhost, $user, $pass, $dbname);
+            $connData = new Database\Adapter\Conn\MySqlConn(
+                $dbhost,
+                $user,
+                $pass,
+                $dbname
+            );
             $connData->validate();
-            $mysqli = new mysqli($connData->dbhost, $connData->user, $connData->pass, $connData->dbname);
-            if (mysqli_connect_error()) {
-                throw new \RuntimeException("Mysql Connect failed: ".mysqli_connect_error());
-            }
-            $dbd = new Database\Adapter\MySqlDB($mysqli);
+            $dbd = \Database\Adapter\DatabaseFactory::create($dbtype, $connData);
+            //$injector = new \Database\Adapter\InjectorDB\MysqlInjector();
+            //$dbd = $injector->getDatabase($connData);
             break;
         }
         case Database\Adapter\TypeDB::POSTGRES: {
-            $connData = new Database\Adapter\Conn\PostgresConn($dbhost, $user, $pass, $dbname);
+            $connData = new Database\Adapter\Conn\PostgresConn(
+                $dbhost,
+                $user,
+                $pass,
+                $dbname
+            );
             $connData->validate();
-            if(!$postgresDB = @pg_connect($connData->connString))
-            {
-                throw new \RuntimeException("Postgres Connect failed ");
-            }
-            $dbd = new Database\Adapter\PostgresDB($postgresDB);
+            //$injector = new \Database\Adapter\InjectorDB\PostgresInjector();
+            //$dbd = $injector->getDatabase($connData);
             break;
         }
         case Database\Adapter\TypeDB::SQLITE: {
             //$connData = new Database\Adapter\Conn\SqliteConn($location);
             //$connData->validate();
-            //$sqliteDB = new SQLite3($location);
+            //$sqliteDB = new SQLite3($connData->location);
             //$dbd = new Database\Adapter\SqliteDB($sqliteDB);
             break;
         }

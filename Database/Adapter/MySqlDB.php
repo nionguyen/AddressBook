@@ -27,13 +27,17 @@ class MySqlDB implements IDatabase
             throw new \RuntimeException("Mysql query fail : " . $this->getLastErrno() . ": " . $this->getLastError() . "<br>" . "Query : " . $query . "\n");
         return new DBStatement\MysqlRsl($this->db, $query, $result);
     }
-    
+
     public function prepare($query)
     {
         $stmt = $this->db->prepare($query);
         if(!$stmt)
-            throw new \RuntimeException("Mysql prepare fail : " . $this->getLastErrno() . ": " . $this->getLastError() . "<br>" . "Query : " . $query . "\n");
-        return new DBStatement\MysqlStmt($this->db, $query, $stmt);
+            throw new \RuntimeException("Mysql prepare fail : ".
+                $this->getLastErrno().": ".
+                $this->getLastError()."<br> Query : ".$query."\n"
+            );
+            return new DBStatement\MysqlStmt($this->db, $query, $stmt);
+
     }
 
     public function affected_rows()
@@ -58,7 +62,7 @@ class MySqlDB implements IDatabase
             throw new \RuntimeException("Mysql multi query fail : " . $this->getLastErrno() . ": " . $this->getLastError() . "<br>" . "Query : " . $query . "\n");
         return new DBStatement\MysqlRsl($this->db, $query, $result);
     }
-    
+
     public function real_escape_string($escapeStr)
     {
         return $this->db->real_escape_string($escapeStr);

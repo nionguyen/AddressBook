@@ -21,8 +21,7 @@ if($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST["myusername"]) && isset(
     if(!empty($myusername) && !empty($mypassword)) {
         try {
             require_once '../Config.php';
-            
-    
+
             $query = "SELECT `userID`,
                              `username`,
                              `password` 

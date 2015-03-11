@@ -1,5 +1,5 @@
 
-phpunit/vendor/
+tests/vendor/
 
 .idea/misc.xml
 
@@ -14,3 +14,7 @@ phpunit/vendor/
 .idea/vcs.xml
 
 .idea/workspace.xml
+
+.idea/inspectionProfiles/profiles_settings.xml
+
+.idea/inspectionProfiles/Project_Default.xml
